@@ -1,6 +1,391 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>二分法求平方根</title>
+    <url>/2025/08/29/%E4%BA%8C%E5%88%86%E6%B3%95%E6%B1%82%E5%B9%B3%E6%96%B9%E6%A0%B9/</url>
+    <content><![CDATA[题目描述平方根的计算是一个常见的数值计算问题。给定一个非负实数 x，求其平方根，即找到一个数 r，使得 r² &#x3D; x。本问题要求使用二分法来计算平方根，结果保留6位小数。
+
+输入格式输入共 1 行，包含一个非负实数 x。
+输出格式输出共 1 行，包含 x 的平方根，结果保留6位小数。
+数据范围0 ≤ x ≤ 10000
+输入样例1：
+2
+
+输出样例1：
+1.414214
+
+输入样例2：
+16
+
+输出样例2：
+4.000000
+
+注意事项
+
+二分法求平方根的基本思想是在一个合理的范围内不断缩小查找区间，直到达到所需的精度。
+对于非负实数 x，其平方根的范围是 [0, max(x, 1)]。
+需要设置一个精度阈值，当查找区间的长度小于该阈值时，认为已经找到足够精确的结果。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;iomanip&gt;using namespace std;// 二分法计算平方根double sqrtBinarySearch(double x, double precision)&#123;    // 处理特殊情况    if (x == 0 || x == 1)    &#123;        return x;    &#125;        double left, right;    // 确定查找范围    if (x &lt; 1)    &#123;        left = x;        right = 1;    &#125;    else    &#123;        left = 1;        right = x;    &#125;        // 二分查找    while (right - left &gt; precision)    &#123;        double mid = left + (right - left) / 2;        double mid_squared = mid * mid;                if (mid_squared == x)        &#123;            return mid; // 找到精确的平方根        &#125;        else if (mid_squared &lt; x)        &#123;            left = mid; // 在右半部分继续查找        &#125;        else        &#123;            right = mid; // 在左半部分继续查找        &#125;    &#125;        // 返回区间中点作为结果    return (left + right) / 2;&#125;int main()&#123;    double x;    cin &gt;&gt; x;        double precision = 1e-8; // 设置精度阈值（比要求的6位小数更高，以确保结果正确）    double result = sqrtBinarySearch(x, precision);        // 输出结果，保留6位小数    cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(log(x&#x2F;precision))，其中 x 是输入的非负实数，precision 是精度阈值。
+空间复杂度：O(1)。
+
+代码解释
+
+二分法求平方根的核心思想是在一个合理的范围内不断缩小查找区间，直到达到所需的精度。
+对于非负实数 x，我们需要确定一个合理的查找范围：
+如果 x &lt; 1，那么平方根的范围是 [x, 1]。
+如果 x ≥ 1，那么平方根的范围是 [1, x]。
+
+
+在每次迭代中，我们计算区间中点 mid，并计算 mid²。然后根据 mid² 与 x 的大小关系，调整查找区间：
+如果 mid² &lt; x，说明平方根在 [mid, right] 范围内。
+如果 mid² &gt; x，说明平方根在 [left, mid] 范围内。
+
+
+重复上述过程，直到查找区间的长度小于设定的精度阈值。
+最后，返回区间中点作为平方根的近似值。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两数之和</title>
+    <url>/2025/08/29/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[题目描述给定一个整数数组 nums 和一个目标值 target，要求在数组中找出和为目标值的两个整数，并返回它们的数组下标。假设每种输入只会对应一个答案，且数组中同一个元素不能使用两遍。
+
+输入格式输入共 3 行：
+
+第一行包含一个整数 n，表示数组的长度。
+第二行包含 n 个整数，表示数组 nums 的元素。
+第三行包含一个整数 target，表示目标值。
+
+输出格式输出共 1 行，包含两个整数，表示和为目标值的两个元素的数组下标，中间用空格分隔。
+数据范围2 ≤ n ≤ 10^4-10^9 ≤ nums[i] ≤ 10^9-10^9 ≤ target ≤ 10^9
+输入样例1：
+42 7 11 159
+
+输出样例1：
+0 1
+
+输入样例2：
+33 2 46
+
+输出样例2：
+1 2
+
+注意事项
+
+可以假设每种输入只会对应一个答案，但不能重复利用数组中的同一个元素。
+暴力枚举法的时间复杂度为O(n²)，对于大规模数据可能会超时。
+使用哈希表可以将时间复杂度降低到O(n)，空间复杂度为O(n)。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;unordered_map&gt;using namespace std;// 方法一：暴力枚举法vector&lt;int&gt; twoSumBruteForce(vector&lt;int&gt;&amp; nums, int target)&#123;    int n = nums.size();    for (int i = 0; i &lt; n; i++)    &#123;        for (int j = i + 1; j &lt; n; j++)        &#123;            if (nums[i] + nums[j] == target)            &#123;                return &#123;i, j&#125;;            &#125;        &#125;    &#125;    return &#123;&#125;; // 没有找到符合条件的两个数&#125;// 方法二：哈希表法（更高效）vector&lt;int&gt; twoSumHashTable(vector&lt;int&gt;&amp; nums, int target)&#123;    unordered_map&lt;int, int&gt; numMap;    int n = nums.size();        // 遍历数组，寻找符合条件的两个数    for (int i = 0; i &lt; n; i++)    &#123;        int complement = target - nums[i];                // 检查complement是否在哈希表中        if (numMap.find(complement) != numMap.end())        &#123;            return &#123;numMap[complement], i&#125;;        &#125;                // 将当前元素及其下标加入哈希表        numMap[nums[i]] = i;    &#125;        return &#123;&#125;; // 没有找到符合条件的两个数&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; nums[i];    &#125;        int target;    cin &gt;&gt; target;        // 使用哈希表法求解（更高效）    vector&lt;int&gt; result = twoSumHashTable(nums, target);        // 如果要使用暴力枚举法，可以取消下面这行的注释，并注释掉上面这行    // vector&lt;int&gt; result = twoSumBruteForce(nums, target);        if (!result.empty())    &#123;        cout &lt;&lt; result[0] &lt;&lt; &quot; &quot; &lt;&lt; result[1] &lt;&lt; endl;    &#125;        return 0;&#125;
+
+时间复杂度
+
+暴力枚举法时间复杂度：O(n²)，其中 n 是数组的长度。
+哈希表法时间复杂度：O(n)，其中 n 是数组的长度。
+空间复杂度：O(1)（暴力枚举法）或 O(n)（哈希表法，用于存储哈希表）。
+
+代码解释
+
+两数之和问题是一个经典的算法问题，可以用暴力枚举法或哈希表法来解决。
+暴力枚举法的思想很简单：使用两层循环，遍历数组中所有可能的两个元素组合，检查它们的和是否等于目标值。这种方法的时间复杂度较高，但实现简单。
+哈希表法的思想是：使用一个哈希表来存储已经遍历过的元素及其下标。在遍历数组的过程中，对于当前元素，我们计算它与目标值的差值，然后检查这个差值是否已经在哈希表中。如果在，则找到了符合条件的两个数；否则，将当前元素及其下标加入哈希表。这种方法的时间复杂度较低，但需要额外的空间来存储哈希表。
+在实际应用中，哈希表法通常是更好的选择，因为它的时间复杂度更低。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二分查找</title>
+    <url>/2025/08/29/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</url>
+    <content><![CDATA[题目描述二分查找是一种在有序数组中查找特定元素的高效算法。它的基本思想是将目标值与数组中间的元素进行比较，如果相等则找到目标；如果目标值小于中间元素，则在左半部分继续查找；如果目标值大于中间元素，则在右半部分继续查找。重复这个过程，直到找到目标值或者确定目标值不存在。
+
+输入格式输入共 3 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示已经排序好的数组（升序）。第三行是一个整数 x，表示要查找的目标值。
+输出格式输出共 1 行，如果找到目标值 x，则输出其在数组中的下标（从0开始计数）；如果不存在，则输出 -1。如果数组中存在多个相同的 x，输出任意一个即可。
+数据范围1 ≤ n ≤ 100000-1000000 ≤ 数组元素, x ≤ 1000000
+输入样例1：
+101 3 5 7 9 11 13 15 17 197
+
+输出样例1：
+3
+
+输入样例2：
+101 3 5 7 9 11 13 15 17 196
+
+输出样例2：
+-1
+
+注意事项
+
+二分查找的时间复杂度为 O(logn)，空间复杂度为 O(1)。
+二分查找要求数组必须是有序的。
+当处理大规模数据时，二分查找比线性查找更高效。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 二分查找函数（递归实现）int binarySearchRecursive(int a[], int left, int right, int x)&#123;    if (left &gt; right)    &#123;        return -1; // 未找到目标值    &#125;        int mid = left + (right - left) / 2; // 计算中间位置，避免整数溢出        if (a[mid] == x)    &#123;        return mid; // 找到目标值    &#125;    else if (a[mid] &gt; x)    &#123;        return binarySearchRecursive(a, left, mid - 1, x); // 在左半部分查找    &#125;    else    &#123;        return binarySearchRecursive(a, mid + 1, right, x); // 在右半部分查找    &#125;&#125;// 二分查找函数（非递归实现）int binarySearchIterative(int a[], int n, int x)&#123;    int left = 0;    int right = n - 1;        while (left &lt;= right)    &#123;        int mid = left + (right - left) / 2; // 计算中间位置，避免整数溢出                if (a[mid] == x)        &#123;            return mid; // 找到目标值        &#125;        else if (a[mid] &gt; x)        &#123;            right = mid - 1; // 在左半部分查找        &#125;        else        &#123;            left = mid + 1; // 在右半部分查找        &#125;    &#125;        return -1; // 未找到目标值&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        int x;    cin &gt;&gt; x;        // 调用非递归版本的二分查找函数    int result = binarySearchIterative(a, n, x);        // 如果要使用递归版本，可以取消下面这行的注释，并注释掉上面这行    // int result = binarySearchRecursive(a, 0, n - 1, x);        cout &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(logn)，其中 n 为数组的长度。
+空间复杂度：O(1)（非递归实现）或 O(logn)（递归实现，由递归调用栈占用的空间）。
+
+代码解释
+
+二分查找的核心思想是将目标值与数组中间的元素进行比较，并根据比较结果缩小查找范围。
+在这个实现中，我们提供了两种版本的二分查找：递归版本和非递归版本。
+递归版本的终止条件是左边界大于右边界（表示未找到目标值）或者找到目标值。
+非递归版本使用循环来代替递归，循环的条件是左边界小于等于右边界。
+在计算中间位置时，我们使用 mid &#x3D; left + (right - left) &#x2F; 2 而不是 mid &#x3D; (left + right) &#x2F; 2，这是为了避免在 left 和 right 很大时发生整数溢出。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>冒泡排序</title>
+    <url>/2025/08/29/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢”浮”到数列的顶端。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 1000-1000 ≤ 数组元素 ≤ 1000
+输入样例：
+53 1 4 2 5
+
+输出样例：
+1 2 3 4 5
+
+注意事项
+
+冒泡排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。
+冒泡排序是稳定的排序算法。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        // 冒泡排序    for (int i = 0; i &lt; n - 1; i++)    &#123;        for (int j = 0; j &lt; n - 1 - i; j++)        &#123;            if (a[j] &gt; a[j + 1])            &#123;                // 交换a[j]和a[j+1]                int temp = a[j];                a[j] = a[j + 1];                a[j + 1] = temp;            &#125;        &#125;    &#125;        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(n²)，其中 n 为数组的长度。
+空间复杂度：O(1)。
+
+代码解释
+
+我们使用两层循环来实现冒泡排序。外层循环控制排序的轮数，内层循环控制每轮比较的次数。
+在每一轮中，我们比较相邻的两个元素，如果它们的顺序错误（前面的元素大于后面的元素），就交换它们的位置。
+每轮结束后，最大的元素会被”冒泡”到数组的末尾。
+重复上述过程，直到整个数组排序完成。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反转链表</title>
+    <url>/2025/08/29/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[题目描述给你单链表的头节点 head，请你反转链表，并返回反转后的链表的头节点。
+
+输入格式输入共 2 行：
+
+第一行包含一个整数 n，表示链表的长度。
+第二行包含 n 个整数，表示链表的节点值，按链表顺序给出。
+
+输出格式输出共 1 行，包含 n 个整数，表示反转后的链表的节点值，按链表顺序给出。
+数据范围链表中节点的数目在范围 [0, 5000] 内-5000 ≤ Node.val ≤ 5000
+输入样例1：
+51 2 3 4 5
+
+输出样例1：
+5 4 3 2 1
+
+输入样例2：
+21 2
+
+输出样例2：
+2 1
+
+输入样例3：
+11
+
+输出样例3：
+1
+
+注意事项
+
+可以使用迭代或递归的方法来反转链表。
+迭代方法的时间复杂度为O(n)，空间复杂度为O(1)。
+递归方法的时间复杂度为O(n)，空间复杂度为O(n)，因为递归调用会使用栈空间。
+在本题中，为了方便输入输出，我们将使用数组来模拟链表的输入，并将反转后的链表转换为数组输出。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;using namespace std;// 定义链表节点结构struct ListNode &#123;    int val;    ListNode *next;    ListNode() : val(0), next(nullptr) &#123;&#125;    ListNode(int x) : val(x), next(nullptr) &#123;&#125;    ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;&#125;;// 方法一：迭代反转链表ListNode* reverseListIterative(ListNode* head)&#123;    ListNode* prev = nullptr;    ListNode* curr = head;        while (curr != nullptr) &#123;        ListNode* nextTemp = curr-&gt;next; // 保存下一个节点        curr-&gt;next = prev;              // 反转当前节点的指针        prev = curr;                    // 移动prev指针        curr = nextTemp;                // 移动curr指针    &#125;        return prev; // prev现在是新的头节点&#125;// 方法二：递归反转链表ListNode* reverseListRecursive(ListNode* head)&#123;    // 基本情况：空链表或只有一个节点    if (head == nullptr || head-&gt;next == nullptr) &#123;        return head;    &#125;        // 递归反转剩余部分    ListNode* newHead = reverseListRecursive(head-&gt;next);        // 反转当前节点和下一个节点的连接    head-&gt;next-&gt;next = head;    head-&gt;next = nullptr;        return newHead;&#125;// 从数组创建链表ListNode* createList(vector&lt;int&gt;&amp; nums)&#123;    if (nums.empty()) &#123;        return nullptr;    &#125;        ListNode* head = new ListNode(nums[0]);    ListNode* current = head;        for (int i = 1; i &lt; nums.size(); i++) &#123;        current-&gt;next = new ListNode(nums[i]);        current = current-&gt;next;    &#125;        return head;&#125;// 从链表创建数组（用于输出）vector&lt;int&gt; listToArray(ListNode* head)&#123;    vector&lt;int&gt; result;    ListNode* current = head;        while (current != nullptr) &#123;        result.push_back(current-&gt;val);        current = current-&gt;next;    &#125;        return result;&#125;// 释放链表内存void deleteList(ListNode* head)&#123;    ListNode* current = head;    while (current != nullptr) &#123;        ListNode* next = current-&gt;next;        delete current;        current = next;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; nums[i];    &#125;        // 创建链表    ListNode* head = createList(nums);        // 使用迭代方法反转链表    ListNode* reversedHead = reverseListIterative(head);        // 如果要使用递归方法，可以取消下面这行的注释，并注释掉上面这行    // ListNode* reversedHead = reverseListRecursive(head);        // 将反转后的链表转换为数组并输出    vector&lt;int&gt; result = listToArray(reversedHead);    for (int i = 0; i &lt; result.size(); i++) &#123;        cout &lt;&lt; result[i];        if (i != result.size() - 1) &#123;            cout &lt;&lt; &quot; &quot;;        &#125;    &#125;    cout &lt;&lt; endl;        // 释放内存    deleteList(reversedHead);        return 0;&#125;
+
+时间复杂度
+
+迭代方法时间复杂度：O(n)，其中 n 是链表的长度。我们只需要遍历链表一次。
+递归方法时间复杂度：O(n)，其中 n 是链表的长度。递归调用的次数等于链表的长度。
+空间复杂度：O(1)（迭代方法）或 O(n)（递归方法，由递归调用栈占用的空间）。
+
+代码解释
+
+反转链表是链表操作中的一个基础问题，可以用迭代或递归的方法解决。
+迭代方法的核心思想是维护三个指针：prev（前一个节点）、curr（当前节点）和nextTemp（下一个节点）。在遍历链表的过程中，我们将当前节点的next指针指向前一个节点，然后移动这三个指针，直到遍历完整个链表。
+递归方法的核心思想是先递归反转链表的剩余部分，然后反转当前节点和下一个节点的连接。递归的基本情况是空链表或只有一个节点的链表。
+在本题中，为了方便输入输出，我们使用数组来模拟链表的输入，并将反转后的链表转换为数组输出。在实际应用中，链表通常是直接给定的。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>合并两个有序链表</title>
+    <url>/2025/08/29/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[题目描述将两个升序链表合并为一个新的升序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+
+输入格式输入共 5 行：
+
+第一行包含一个整数 n，表示第一个链表的长度。
+第二行包含 n 个整数，表示第一个链表的节点值，按链表顺序给出。
+第三行包含一个整数 m，表示第二个链表的长度。
+第四行包含 m 个整数，表示第二个链表的节点值，按链表顺序给出。
+
+输出格式输出共 1 行，包含 n+m 个整数，表示合并后的链表的节点值，按链表顺序给出。
+数据范围两个链表的节点数目范围是 [0, 50]-100 ≤ Node.val ≤ 100两个链表均按非递减顺序排列
+输入样例1：
+21 233 4 5
+
+输出样例1：
+1 2 3 4 5
+
+输入样例2：
+21 221 3
+
+输出样例2：
+1 1 2 3
+
+输入样例3：
+010
+
+输出样例3：
+0
+
+注意事项
+
+可以使用迭代或递归的方法来合并两个有序链表。
+迭代方法的时间复杂度为O(n+m)，空间复杂度为O(1)。
+递归方法的时间复杂度为O(n+m)，空间复杂度为O(n+m)，因为递归调用会使用栈空间。
+在本题中，为了方便输入输出，我们将使用数组来模拟链表的输入，并将合并后的链表转换为数组输出。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;using namespace std;// 定义链表节点结构struct ListNode &#123;    int val;    ListNode *next;    ListNode() : val(0), next(nullptr) &#123;&#125;    ListNode(int x) : val(x), next(nullptr) &#123;&#125;    ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;&#125;;// 方法一：迭代合并两个有序链表ListNode* mergeTwoListsIterative(ListNode* list1, ListNode* list2)&#123;    // 创建一个哑节点作为新链表的头部    ListNode* dummy = new ListNode(-1);    ListNode* curr = dummy;        // 同时遍历两个链表，每次选择值较小的节点加入新链表    while (list1 != nullptr &amp;&amp; list2 != nullptr)    &#123;        if (list1-&gt;val &lt;= list2-&gt;val)        &#123;            curr-&gt;next = list1;            list1 = list1-&gt;next;        &#125;        else        &#123;            curr-&gt;next = list2;            list2 = list2-&gt;next;        &#125;        curr = curr-&gt;next;    &#125;        // 将剩余的节点直接接到新链表的末尾    if (list1 != nullptr)    &#123;        curr-&gt;next = list1;    &#125;    else    &#123;        curr-&gt;next = list2;    &#125;        // 保存新链表的头部，并释放哑节点    ListNode* head = dummy-&gt;next;    delete dummy;        return head;&#125;// 方法二：递归合并两个有序链表ListNode* mergeTwoListsRecursive(ListNode* list1, ListNode* list2)&#123;    // 基本情况：如果其中一个链表为空，直接返回另一个链表    if (list1 == nullptr)    &#123;        return list2;    &#125;    if (list2 == nullptr)    &#123;        return list1;    &#125;        // 递归情况：选择值较小的节点作为当前节点，然后递归合并剩余部分    if (list1-&gt;val &lt;= list2-&gt;val)    &#123;        list1-&gt;next = mergeTwoListsRecursive(list1-&gt;next, list2);        return list1;    &#125;    else    &#123;        list2-&gt;next = mergeTwoListsRecursive(list1, list2-&gt;next);        return list2;    &#125;&#125;// 从数组创建链表ListNode* createList(vector&lt;int&gt;&amp; nums)&#123;    if (nums.empty()) &#123;        return nullptr;    &#125;        ListNode* head = new ListNode(nums[0]);    ListNode* current = head;        for (int i = 1; i &lt; nums.size(); i++) &#123;        current-&gt;next = new ListNode(nums[i]);        current = current-&gt;next;    &#125;        return head;&#125;// 从链表创建数组（用于输出）vector&lt;int&gt; listToArray(ListNode* head)&#123;    vector&lt;int&gt; result;    ListNode* current = head;        while (current != nullptr) &#123;        result.push_back(current-&gt;val);        current = current-&gt;next;    &#125;        return result;&#125;// 释放链表内存void deleteList(ListNode* head)&#123;    ListNode* current = head;    while (current != nullptr) &#123;        ListNode* next = current-&gt;next;        delete current;        current = next;    &#125;&#125;int main()&#123;    int n, m;        // 读取第一个链表    cin &gt;&gt; n;    vector&lt;int&gt; nums1(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; nums1[i];    &#125;        // 读取第二个链表    cin &gt;&gt; m;    vector&lt;int&gt; nums2(m);    for (int i = 0; i &lt; m; i++) &#123;        cin &gt;&gt; nums2[i];    &#125;        // 创建两个链表    ListNode* list1 = createList(nums1);    ListNode* list2 = createList(nums2);        // 使用迭代方法合并链表    ListNode* mergedList = mergeTwoListsIterative(list1, list2);        // 如果要使用递归方法，可以取消下面这行的注释，并注释掉上面这行    // ListNode* mergedList = mergeTwoListsRecursive(list1, list2);        // 将合并后的链表转换为数组并输出    vector&lt;int&gt; result = listToArray(mergedList);    for (int i = 0; i &lt; result.size(); i++) &#123;        cout &lt;&lt; result[i];        if (i != result.size() - 1) &#123;            cout &lt;&lt; &quot; &quot;;        &#125;    &#125;    cout &lt;&lt; endl;        // 释放内存    deleteList(mergedList);        return 0;&#125;
+
+时间复杂度
+
+迭代方法时间复杂度：O(n+m)，其中 n 和 m 分别是两个链表的长度。我们需要遍历两个链表各一次。
+递归方法时间复杂度：O(n+m)，其中 n 和 m 分别是两个链表的长度。递归调用的次数等于两个链表的节点总数。
+空间复杂度：O(1)（迭代方法）或 O(n+m)（递归方法，由递归调用栈占用的空间）。
+
+代码解释
+
+合并两个有序链表是链表操作中的一个基础问题，可以用迭代或递归的方法解决。
+迭代方法的核心思想是使用一个指针 curr 来构建新的链表。我们同时遍历两个链表，每次选择值较小的节点加入新链表，直到遍历完其中一个链表。然后将另一个链表的剩余部分直接接到新链表的末尾。
+递归方法的核心思想是：如果其中一个链表为空，直接返回另一个链表；否则，选择值较小的节点作为当前节点，然后递归地合并该节点的下一个节点与另一个链表。
+在本题中，为了方便输入输出，我们使用数组来模拟链表的输入，并将合并后的链表转换为数组输出。在实际应用中，链表通常是直接给定的。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>回文数判断</title>
+    <url>/2025/08/29/%E5%9B%9E%E6%96%87%E6%95%B0%E5%88%A4%E6%96%AD/</url>
+    <content><![CDATA[题目描述回文数是指正着读和倒着读都一样的整数。例如，121是回文数，而123不是回文数。本问题要求判断一个整数是否为回文数。
+
+输入格式输入共 1 行，包含一个整数 x。
+输出格式输出共 1 行，如果 x 是回文数，输出 “true”；否则输出 “false”。
+数据范围-2^31 ≤ x ≤ 2^31 - 1
+输入样例1：
+121
+
+输出样例1：
+true
+
+输入样例2：
+-121
+
+输出样例2：
+false
+
+输入样例3：
+10
+
+输出样例3：
+false
+
+注意事项
+
+负数不是回文数，因为负号在倒过来之后会变成数字的一部分，改变了数字的意义。
+可以通过将整数转换为字符串来判断是否为回文数，也可以通过数学方法直接反转整数来判断。
+在反转整数时，需要注意避免整数溢出的问题。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 方法一：将整数转换为字符串进行判断bool isPalindromeString(int x)&#123;    if (x &lt; 0)    &#123;        return false; // 负数不是回文数    &#125;        string s = to_string(x);    int left = 0;    int right = s.length() - 1;        while (left &lt; right)    &#123;        if (s[left] != s[right])        &#123;            return false;        &#125;        left++;        right--;    &#125;        return true;&#125;// 方法二：数学方法，反转整数后比较bool isPalindromeMath(int x)&#123;    // 特殊情况：    // 1. 负数不是回文数    // 2. 如果数字的最后一位是0，那么只有当数字本身是0时才是回文数    if (x &lt; 0 || (x % 10 == 0 &amp;&amp; x != 0))    &#123;        return false;    &#125;        int reversedNumber = 0;        // 只反转一半数字，避免整数溢出    while (x &gt; reversedNumber)    &#123;        reversedNumber = reversedNumber * 10 + x % 10;        x /= 10;    &#125;        // 当数字长度为奇数时，通过reversedNumber/10去除中间位    return x == reversedNumber || x == reversedNumber / 10;&#125;int main()&#123;    int x;    cin &gt;&gt; x;        // 使用数学方法判断回文数（更高效）    bool result = isPalindromeMath(x);        // 如果要使用字符串方法，可以取消下面这行的注释，并注释掉上面这行    // bool result = isPalindromeString(x);        if (result)    &#123;        cout &lt;&lt; &quot;true&quot; &lt;&lt; endl;    &#125;    else    &#123;        cout &lt;&lt; &quot;false&quot; &lt;&lt; endl;    &#125;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(logx)，其中 x 是输入的整数，logx 是 x 的位数。
+空间复杂度：O(1)（数学方法）或 O(logx)（字符串方法，用于存储字符串）。
+
+代码解释
+
+判断回文数有两种常见的方法：将整数转换为字符串进行判断，或者使用数学方法直接反转整数进行比较。
+字符串方法的思想很简单：将整数转换为字符串后，从两端向中间比较字符是否相同。
+数学方法的思想是：通过取模和除法运算，将整数的后半部分反转，然后与前半部分进行比较。这种方法可以避免整数溢出的问题，因为我们只反转一半数字。
+对于数学方法，我们需要处理一些特殊情况：负数不是回文数；如果数字的最后一位是0，那么只有当数字本身是0时才是回文数。
+当数字长度为奇数时，反转后的数字会比原数字多一位，这时需要通过除以10来去除中间位。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>基数排序</title>
     <url>/2025/08/29/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[题目描述基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法（通常是计数排序）。
@@ -47,6 +432,228 @@
       </categories>
       <tags>
         <tag>C++;排序算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>堆排序</title>
+    <url>/2025/08/29/%E5%A0%86%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述堆排序是一种基于比较的排序算法，它利用堆这种数据结构（通常是二叉堆）来进行排序。堆是一个近似完全二叉树的结构，并同时满足堆的性质：即子节点的键值或索引总是小于（或者大于）它的父节点。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 10000-10000 ≤ 数组元素 ≤ 10000
+输入样例：
+104 10 3 5 1 8 7 2 9 6
+
+输出样例：
+1 2 3 4 5 6 7 8 9 10
+
+注意事项
+
+堆排序的时间复杂度为 O(nlogn)，空间复杂度为 O(1)。
+堆排序是不稳定的排序算法。
+堆排序特别适合于需要找出最大或最小元素的场景。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 交换两个元素void swap(int &amp;a, int &amp;b)&#123;    int temp = a;    a = b;    b = temp;&#125;// 调整堆，使其满足最大堆的性质void heapify(int a[], int n, int i)&#123;    int largest = i; // 初始化largest为根节点    int left = 2 * i + 1; // 左子节点    int right = 2 * i + 2; // 右子节点        // 如果左子节点大于根节点    if (left &lt; n &amp;&amp; a[left] &gt; a[largest])    &#123;        largest = left;    &#125;        // 如果右子节点大于目前的最大值    if (right &lt; n &amp;&amp; a[right] &gt; a[largest])    &#123;        largest = right;    &#125;        // 如果最大值不是根节点，则交换并继续调整堆    if (largest != i)    &#123;        swap(a[i], a[largest]);        heapify(a, n, largest); // 递归地调整受影响的子树    &#125;&#125;// 堆排序函数void heapSort(int a[], int n)&#123;    // 构建最大堆（从最后一个非叶子节点开始向上调整）    for (int i = n / 2 - 1; i &gt;= 0; i--)    &#123;        heapify(a, n, i);    &#125;        // 一个个从堆顶取出元素    for (int i = n - 1; i &gt; 0; i--)    &#123;        // 将当前堆顶（最大值）移到数组末尾        swap(a[0], a[i]);                // 对剩余的堆进行调整，使其重新满足最大堆的性质        heapify(a, i, 0);    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        heapSort(a, n); // 对整个数组进行堆排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(nlogn)，其中 n 为数组的长度。
+空间复杂度：O(1)。
+
+代码解释
+
+堆排序的核心思想是首先将数组构建成一个最大堆，然后依次将堆顶元素（最大值）与堆的最后一个元素交换，并重新调整堆，使其满足最大堆的性质。
+构建最大堆的时间复杂度为 O(n)，而调整堆的时间复杂度为 O(logn)，需要调整 n-1 次，因此总的时间复杂度为 O(n + (n-1)logn) &#x3D; O(nlogn)。
+在这个实现中，我们使用数组来表示二叉堆，对于索引为 i 的节点，其左子节点的索引为 2i+1，右子节点的索引为 2i+2，父节点的索引为 (i-1)&#x2F;2（整数除法）。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希尔排序</title>
+    <url>/2025/08/29/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述希尔排序是插入排序的一种更高效的改进版本，也称为缩小增量排序。它通过比较相距一定间隔的元素来进行排序。逐步缩小这个间隔直到为1，最后进行一次普通的插入排序。希尔排序的主要思想是先将整个待排序序列分割成若干个子序列分别进行直接插入排序，待整个序列中的元素”基本有序”时，再对全体元素进行一次直接插入排序。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 10000-10000 ≤ 数组元素 ≤ 10000
+输入样例：
+109 8 7 6 5 4 3 2 1 0
+
+输出样例：
+0 1 2 3 4 5 6 7 8 9
+
+注意事项
+
+希尔排序的时间复杂度取决于增量序列的选择，最坏时间复杂度为 O(n²)，平均时间复杂度约为 O(n^1.3)。
+希尔排序的空间复杂度为 O(1)。
+希尔排序是不稳定的排序算法。
+希尔排序对于中等规模的数组表现较好。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 希尔排序函数void shellSort(int a[], int n)&#123;    // 选择增量序列：n/2, n/4, ..., 1    for (int gap = n / 2; gap &gt; 0; gap /= 2)    &#123;        // 对每个子序列进行插入排序        for (int i = gap; i &lt; n; i++)        &#123;            int temp = a[i]; // 保存当前要插入的元素            int j = i;            // 在已排序的子序列中寻找正确的插入位置            while (j &gt;= gap &amp;&amp; a[j - gap] &gt; temp)            &#123;                a[j] = a[j - gap];                j -= gap;            &#125;            a[j] = temp; // 将元素插入到正确的位置        &#125;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        shellSort(a, n); // 对整个数组进行希尔排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：取决于增量序列的选择，最坏情况下为 O(n²)，平均情况下约为 O(n^1.3)。
+空间复杂度：O(1)。
+
+代码解释
+
+希尔排序的核心思想是通过比较相距一定间隔（gap）的元素来进行排序，逐步缩小这个间隔直到为1。
+在这个实现中，我们选择的增量序列是 n&#x2F;2, n&#x2F;4, …, 1。
+对于每个增量 gap，我们将数组分成 gap 个组，每个组内的元素在原数组中间隔 gap 个位置。
+然后，我们对每个组内的元素进行插入排序。
+随着增量 gap 的逐渐减小，数组会变得越来越有序。
+当 gap 减小到 1 时，我们进行一次普通的插入排序，但此时数组已经基本有序，所以插入排序的效率会很高。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>归并排序</title>
+    <url>/2025/08/29/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述归并排序是建立在归并操作上的一种有效的排序算法，该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。归并排序是一种稳定的排序方法，将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 10000-10000 ≤ 数组元素 ≤ 10000
+输入样例：
+938 27 43 3 9 82 10 1 23
+
+输出样例：
+1 3 9 10 23 27 38 43 82
+
+注意事项
+
+归并排序的时间复杂度为 O(nlogn)，空间复杂度为 O(n)。
+归并排序是稳定的排序算法。
+归并排序特别适合于处理大规模数据，尤其是对于链表排序。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 合并两个有序子数组void merge(int a[], int temp[], int left, int mid, int right)&#123;    int i = left; // 左子数组的起始索引    int j = mid + 1; // 右子数组的起始索引    int k = left; // 临时数组的起始索引        // 合并两个子数组到临时数组    while (i &lt;= mid &amp;&amp; j &lt;= right)    &#123;        if (a[i] &lt;= a[j])        &#123;            temp[k++] = a[i++];        &#125;        else        &#123;            temp[k++] = a[j++];        &#125;    &#125;        // 处理左子数组中剩余的元素    while (i &lt;= mid)    &#123;        temp[k++] = a[i++];    &#125;        // 处理右子数组中剩余的元素    while (j &lt;= right)    &#123;        temp[k++] = a[j++];    &#125;        // 将临时数组中的元素复制回原数组    for (i = left; i &lt;= right; i++)    &#123;        a[i] = temp[i];    &#125;&#125;// 归并排序函数void mergeSort(int a[], int temp[], int left, int right)&#123;    if (left &lt; right)    &#123;        int mid = left + (right - left) / 2; // 计算中间位置，避免整数溢出        mergeSort(a, temp, left, mid); // 递归排序左子数组        mergeSort(a, temp, mid + 1, right); // 递归排序右子数组        merge(a, temp, left, mid, right); // 合并两个有序子数组    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    int temp[n]; // 临时数组，用于合并操作        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        mergeSort(a, temp, 0, n - 1); // 对整个数组进行归并排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(nlogn)，其中 n 为数组的长度。
+空间复杂度：O(n)（需要额外的临时数组来辅助合并操作）。
+
+代码解释
+
+归并排序的核心思想是将数组分成两半，分别对它们进行排序，然后将两个有序的子数组合并成一个有序的数组。
+合并操作是归并排序的关键，它需要一个临时数组来存储合并后的结果。
+在合并过程中，我们比较两个子数组的元素，将较小的元素放入临时数组中，直到一个子数组的所有元素都被处理完毕。
+然后，我们将另一个子数组中剩余的元素直接复制到临时数组的末尾。
+最后，我们将临时数组中的元素复制回原数组。
+递归的终止条件是子数组的长度小于或等于1（即left &gt;&#x3D; right）。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快速排序</title>
+    <url>/2025/08/29/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述快速排序是一种高效的排序算法，它采用了分治（Divide and Conquer）的思想。基本思想是通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 10000-10000 ≤ 数组元素 ≤ 10000
+输入样例：
+83 1 4 1 5 9 2 6
+
+输出样例：
+1 1 2 3 4 5 6 9
+
+注意事项
+
+快速排序的平均时间复杂度为 O(nlogn)，最坏时间复杂度为 O(n²)，空间复杂度为 O(logn)。
+快速排序是不稳定的排序算法。
+在大多数情况下，快速排序是实际应用中性能最好的排序算法之一。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 交换两个元素void swap(int &amp;a, int &amp;b)&#123;    int temp = a;    a = b;    b = temp;&#125;// 分区函数，返回枢轴元素的最终位置int partition(int a[], int low, int high)&#123;    int pivot = a[high]; // 选择最右边的元素作为枢轴    int i = low - 1; // i指向小于枢轴元素的最后一个位置        for (int j = low; j &lt; high; j++)    &#123;        if (a[j] &lt;= pivot)        &#123;            i++;            swap(a[i], a[j]);        &#125;    &#125;    swap(a[i + 1], a[high]); // 将枢轴元素放到正确的位置    return i + 1; // 返回枢轴元素的最终位置&#125;// 快速排序函数void quickSort(int a[], int low, int high)&#123;    if (low &lt; high)    &#123;        int pivot_index = partition(a, low, high); // 获取枢轴元素的最终位置        quickSort(a, low, pivot_index - 1); // 递归排序枢轴元素左边的子数组        quickSort(a, pivot_index + 1, high); // 递归排序枢轴元素右边的子数组    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        quickSort(a, 0, n - 1); // 对整个数组进行快速排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+平均时间复杂度：O(nlogn)，其中 n 为数组的长度。
+最坏时间复杂度：O(n²)（当输入数组已经排序或接近排序时）。
+空间复杂度：O(logn)（由递归调用栈占用的空间）。
+
+代码解释
+
+快速排序的核心是分区（partition）操作，我们选择一个元素作为枢轴（pivot），然后将数组重新排列，使得所有小于枢轴的元素都在枢轴的左边，所有大于枢轴的元素都在枢轴的右边。
+然后，我们递归地对枢轴左右两边的子数组应用相同的操作。
+在这个实现中，我们选择最右边的元素作为枢轴，使用双指针技术来完成分区操作。
+递归的终止条件是子数组的长度小于或等于1（即low &gt;&#x3D; high）。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>插入排序</title>
+    <url>/2025/08/29/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述插入排序是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序）。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 1000-1000 ≤ 数组元素 ≤ 1000
+输入样例：
+79 8 7 6 5 4 3
+
+输出样例：
+3 4 5 6 7 8 9
+
+注意事项
+
+插入排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。
+插入排序是稳定的排序算法。
+插入排序特别适合于小规模数据或基本有序的数据。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        // 插入排序    for (int i = 1; i &lt; n; i++)    &#123;        int key = a[i]; // 保存当前要插入的元素        int j = i - 1;        // 将比key大的元素向后移动        while (j &gt;= 0 &amp;&amp; a[j] &gt; key)        &#123;            a[j + 1] = a[j];            j--;        &#125;        a[j + 1] = key; // 将key插入到正确的位置    &#125;        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(n²)，其中 n 为数组的长度。
+空间复杂度：O(1)。
+
+代码解释
+
+我们从第二个元素开始，将其视为要插入的元素。
+对于每个要插入的元素，我们将其与已排序部分从后向前比较。
+如果已排序部分的元素大于当前要插入的元素，则将其向后移动一位。
+重复上述过程，直到找到一个小于或等于当前要插入元素的位置，或者到达数组的开头。
+将当前要插入的元素放到找到的位置上。
+重复上述过程，直到所有元素都被插入到正确的位置。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -99,6 +706,327 @@
       </tags>
   </entry>
   <entry>
+    <title>数组中的第K个最大元素</title>
+    <url>/2025/08/29/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E7%AC%ACK%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/</url>
+    <content><![CDATA[题目描述在未排序的数组中找到第 k 个最大的元素。请注意，这里的第 k 个最大元素是指按数组元素从大到小排序后的第 k 个元素，而不是第 k 个不同的元素。
+
+输入格式输入共 3 行：
+
+第一行包含一个整数 n，表示数组的长度。
+第二行包含 n 个整数，表示数组的元素。
+第三行包含一个整数 k，表示要找的第 k 个最大元素。
+
+输出格式输出共 1 行，包含一个整数，表示数组中的第 k 个最大元素。
+数据范围1 ≤ k ≤ n ≤ 10^4-10^4 ≤ nums[i] ≤ 10^4
+输入样例1：
+63 2 1 5 6 42
+
+输出样例1：
+5
+
+输入样例2：
+33 2 3 1 2 4 5 5 64
+
+输出样例2：
+4
+
+注意事项
+
+可以使用排序算法将数组排序，然后取第 k 个最大元素，时间复杂度为O(n log n)。
+使用小顶堆可以将时间复杂度优化到O(n log k)，空间复杂度为O(k)。
+在C++中，可以使用优先队列（默认是大顶堆）来实现小顶堆。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;algorithm&gt;#include &lt;queue&gt;using namespace std;// 方法一：排序法int findKthLargestSort(vector&lt;int&gt;&amp; nums, int k)&#123;    sort(nums.begin(), nums.end(), greater&lt;int&gt;()); // 降序排序    return nums[k - 1]; // 返回第k个最大元素&#125;// 方法二：小顶堆法int findKthLargestHeap(vector&lt;int&gt;&amp; nums, int k)&#123;    priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap; // 小顶堆        // 先将前k个元素加入堆    for (int i = 0; i &lt; k; i++)    &#123;        minHeap.push(nums[i]);    &#125;        // 遍历剩余元素    for (int i = k; i &lt; nums.size(); i++)    &#123;        // 如果当前元素比堆顶元素大，则替换堆顶元素        if (nums[i] &gt; minHeap.top())        &#123;            minHeap.pop();            minHeap.push(nums[i]);        &#125;    &#125;        // 堆顶元素即为第k个最大元素    return minHeap.top();&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; nums[i];    &#125;        int k;    cin &gt;&gt; k;        // 使用小顶堆法求解    int result = findKthLargestHeap(nums, k);        // 如果要使用排序法，可以取消下面这行的注释，并注释掉上面这行    // int result = findKthLargestSort(nums, k);        cout &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+排序法时间复杂度：O(n log n)，其中 n 是数组的长度。
+小顶堆法时间复杂度：O(n log k)，其中 n 是数组的长度，k 是要找的第 k 个最大元素。
+空间复杂度：O(1)（排序法，原地排序）或 O(k)（小顶堆法，用于存储堆）。
+
+代码解释
+
+查找数组中的第 k 个最大元素有两种常见的方法：排序法和小顶堆法。
+排序法的思想很简单：将数组降序排序后，返回第 k-1 个元素（数组索引从0开始）。这种方法的实现简单，但时间复杂度较高。
+小顶堆法的思想是：维护一个大小为 k 的小顶堆，堆中存储当前找到的前 k 个最大元素。遍历数组时，如果当前元素比堆顶元素大，则替换堆顶元素，并调整堆。遍历结束后，堆顶元素即为第 k 个最大元素。这种方法的时间复杂度较低，特别是当 k 远小于 n 时。
+在C++中，可以使用优先队列（priority_queue）来实现小顶堆。默认情况下，priority_queue 是大顶堆，但可以通过传入 greater 作为比较函数来创建小顶堆。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>斐波那契数列</title>
+    <url>/2025/08/29/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/</url>
+    <content><![CDATA[题目描述斐波那契数列是一个非常著名的数列，它的定义如下：F(0)&#x3D;0，F(1)&#x3D;1，对于n≥2，F(n)&#x3D;F(n-1)+F(n-2)。也就是说，斐波那契数列的第n项等于前两项之和。本问题要求计算斐波那契数列的第n项。
+
+输入格式输入共 1 行，包含一个非负整数 n。
+输出格式输出共 1 行，包含斐波那契数列的第 n 项的值。
+数据范围0 ≤ n ≤ 90
+输入样例1：
+10
+
+输出样例1：
+55
+
+输入样例2：
+50
+
+输出样例2：
+12586269025
+
+注意事项
+
+斐波那契数列的增长速度非常快，所以需要使用能够处理大整数的数据类型，如long long。
+递归方法计算斐波那契数列会有大量的重复计算，时间复杂度为O(2^n)，不适合计算较大的n值。
+迭代方法可以避免重复计算，时间复杂度为O(n)，空间复杂度为O(1)。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 递归方法计算斐波那契数列（不推荐用于大n值）long long fibonacciRecursive(int n)&#123;    if (n &lt;= 1)    &#123;        return n;    &#125;    return fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2);&#125;// 迭代方法计算斐波那契数列（推荐使用）long long fibonacciIterative(int n)&#123;    if (n &lt;= 1)    &#123;        return n;    &#125;        long long a = 0; // F(0)    long long b = 1; // F(1)    long long result;        for (int i = 2; i &lt;= n; i++)    &#123;        result = a + b;        a = b;        b = result;    &#125;        return result;&#125;int main()&#123;    int n;    cin &gt;&gt; n;        // 调用迭代版本的斐波那契函数（效率更高）    long long result = fibonacciIterative(n);        // 如果要使用递归版本，可以取消下面这行的注释，并注释掉上面这行    // 注意：递归版本只适合较小的n值    // long long result = fibonacciRecursive(n);        cout &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+递归版本时间复杂度：O(2^n)，其中 n 为输入的非负整数。
+迭代版本时间复杂度：O(n)，其中 n 为输入的非负整数。
+空间复杂度：O(1)（迭代版本）或 O(n)（递归版本，由递归调用栈占用的空间）。
+
+代码解释
+
+递归方法计算斐波那契数列的思想很简单，但存在大量的重复计算，时间复杂度为指数级，不适合计算较大的n值。
+迭代方法通过保存前两项的结果来避免重复计算，时间复杂度为线性，适合计算较大的n值。
+在代码中，我们使用 long long 类型来存储中间结果和最终结果，以避免在处理较大的n值时发生溢出。
+对于n≤90的情况，long long 类型足够存储斐波那契数列的值。如果n更大，可能需要使用大数运算库。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最大公约数和最小公倍数</title>
+    <url>/2025/08/29/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E5%92%8C%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0/</url>
+    <content><![CDATA[题目描述最大公约数（GCD，Greatest Common Divisor）指两个或多个整数共有约数中最大的一个。最小公倍数（LCM，Least Common Multiple）指两个或多个整数公有的倍数中最小的一个。本问题要求计算两个正整数的最大公约数和最小公倍数。
+
+输入格式输入共 1 行，包含两个正整数 a 和 b（用空格分隔）。
+输出格式输出共 2 行，第一行是 a 和 b 的最大公约数，第二行是 a 和 b 的最小公倍数。
+数据范围1 ≤ a, b ≤ 1000000
+输入样例：
+48 36
+
+输出样例：
+12144
+
+注意事项
+
+计算最大公约数常用的算法有欧几里得算法（辗转相除法）和更相减损术。
+最小公倍数可以通过公式 LCM(a, b) &#x3D; a * b &#x2F; GCD(a, b) 计算，但需要注意乘法溢出的问题。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 计算最大公约数（欧几里得算法/辗转相除法）long long gcd(long long a, long long b)&#123;    while (b != 0)    &#123;        long long temp = b;        b = a % b;        a = temp;    &#125;    return a;&#125;// 计算最小公倍数long long lcm(long long a, long long b)&#123;    // 先计算最大公约数，然后使用公式 LCM(a, b) = a * b / GCD(a, b)    // 为了避免乘法溢出，先进行除法运算    return a / gcd(a, b) * b;&#125;int main()&#123;    long long a, b;    cin &gt;&gt; a &gt;&gt; b;        long long greatest_common_divisor = gcd(a, b);    long long least_common_multiple = lcm(a, b);        cout &lt;&lt; greatest_common_divisor &lt;&lt; endl;    cout &lt;&lt; least_common_multiple &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(log min(a, b))，其中 a 和 b 是输入的两个正整数。
+空间复杂度：O(1)。
+
+代码解释
+
+计算最大公约数的欧几里得算法（辗转相除法）的核心思想是：如果 a 和 b 是两个正整数，且 a ≥ b，那么 gcd(a, b) &#x3D; gcd(b, a % b)。当 b 变为 0 时，a 就是最大公约数。
+计算最小公倍数的公式是 LCM(a, b) &#x3D; a * b &#x2F; GCD(a, b)。为了避免乘法溢出，我们先计算 a &#x2F; gcd(a, b)，然后再乘以 b。
+在代码中，我们使用 long long 类型来存储中间结果，以避免在处理较大的输入时发生溢出。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最大子数组和</title>
+    <url>/2025/08/29/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C/</url>
+    <content><![CDATA[题目描述给定一个整数数组 nums，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+输入格式输入共 2 行：
+
+第一行包含一个整数 n，表示数组的长度。
+第二行包含 n 个整数，表示数组 nums 的元素。
+
+输出格式输出共 1 行，包含一个整数，表示最大子数组和。
+数据范围1 ≤ n ≤ 3 * 10^4-10^5 ≤ nums[i] ≤ 10^5
+输入样例1：
+9-2 1 -3 4 -1 2 1 -5 4
+
+输出样例1：
+6
+
+输入样例2：
+11
+
+输出样例2：
+1
+
+输入样例3：
+55 4 -1 7 8
+
+输出样例3：
+23
+
+注意事项
+
+可以使用暴力枚举法，但时间复杂度为O(n²)，对于大规模数据可能会超时。
+动态规划方法的时间复杂度为O(n)，空间复杂度为O(n)。
+可以进一步优化空间复杂度到O(1)。
+还可以使用分治算法来解决这个问题。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;algorithm&gt;using namespace std;// 方法一：暴力枚举法（不推荐用于大规模数据）int maxSubArrayBruteForce(vector&lt;int&gt;&amp; nums)&#123;    int n = nums.size();    int maxSum = INT_MIN;        for (int i = 0; i &lt; n; i++)    &#123;        int currentSum = 0;        for (int j = i; j &lt; n; j++)        &#123;            currentSum += nums[j];            maxSum = max(maxSum, currentSum);        &#125;    &#125;        return maxSum;&#125;// 方法二：动态规划法int maxSubArrayDP(vector&lt;int&gt;&amp; nums)&#123;    int n = nums.size();    vector&lt;int&gt; dp(n); // dp[i] 表示以nums[i]结尾的最大子数组和    dp[0] = nums[0];    int maxSum = dp[0];        for (int i = 1; i &lt; n; i++)    &#123;        // 要么将nums[i]加入前面的子数组，要么以nums[i]开始一个新的子数组        dp[i] = max(nums[i], dp[i - 1] + nums[i]);        maxSum = max(maxSum, dp[i]);    &#125;        return maxSum;&#125;// 方法三：动态规划法（空间优化版）int maxSubArrayDPOptimized(vector&lt;int&gt;&amp; nums)&#123;    int n = nums.size();    int currentSum = nums[0];    int maxSum = nums[0];        for (int i = 1; i &lt; n; i++)    &#123;        // 要么将nums[i]加入前面的子数组，要么以nums[i]开始一个新的子数组        currentSum = max(nums[i], currentSum + nums[i]);        maxSum = max(maxSum, currentSum);    &#125;        return maxSum;&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; nums[i];    &#125;        // 使用空间优化的动态规划法求解    int result = maxSubArrayDPOptimized(nums);        // 如果要使用普通动态规划法，可以取消下面这行的注释，并注释掉上面这行    // int result = maxSubArrayDP(nums);        // 如果要使用暴力枚举法，可以取消下面这行的注释，并注释掉上面这行    // int result = maxSubArrayBruteForce(nums);        cout &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+暴力枚举法时间复杂度：O(n²)，其中 n 是数组的长度。
+动态规划法时间复杂度：O(n)，其中 n 是数组的长度。
+空间复杂度：O(1)（空间优化的动态规划法）或 O(n)（普通动态规划法）。
+
+代码解释
+
+最大子数组和问题是一个经典的动态规划问题。
+暴力枚举法的思想是枚举所有可能的子数组，并计算它们的和，找出最大的那个。这种方法的时间复杂度较高，但实现简单。
+动态规划法的思想是使用dp[i]表示以nums[i]结尾的最大子数组和。对于每个元素nums[i]，我们有两个选择：要么将它加入前面的子数组，要么以它开始一个新的子数组。因此，dp[i] &#x3D; max(nums[i], dp[i-1] + nums[i])。
+空间优化的动态规划法进一步优化了空间复杂度，只需要使用两个变量：currentSum表示当前的子数组和，maxSum表示全局的最大子数组和。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++;动态规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有效的括号</title>
+    <url>/2025/08/29/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/</url>
+    <content><![CDATA[题目描述给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s，判断字符串是否有效。有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+每个右括号都有一个对应的相同类型的左括号。
+
+
+输入格式输入共 1 行，包含一个字符串 s。
+输出格式输出共 1 行，如果字符串 s 是有效的括号字符串，输出 “true”；否则输出 “false”。
+数据范围1 ≤ s.length ≤ 10^4字符串 s 仅由括号 ‘()[]{}’ 组成
+输入样例1：
+()
+
+输出样例1：
+true
+
+输入样例2：
+()[]&#123;&#125;
+
+输出样例2：
+true
+
+输入样例3：
+(]
+
+输出样例3：
+false
+
+注意事项
+
+有效的括号问题是栈的经典应用。
+遇到左括号时，将其压入栈中；遇到右括号时，检查栈顶元素是否是对应的左括号，如果是，则弹出栈顶元素；否则，返回false。
+遍历结束后，如果栈为空，则说明所有括号都正确匹配，返回true；否则，返回false。
+需要注意处理空字符串的情况（在本题中，输入字符串长度至少为1，所以不需要特别处理）。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;string&gt;#include &lt;stack&gt;#include &lt;unordered_map&gt;using namespace std;bool isValid(string s)&#123;    stack&lt;char&gt; bracketStack;    unordered_map&lt;char, char&gt; bracketMap = &#123;        &#123;&#x27;)&#x27;, &#x27;(&#x27;&#125;,        &#123;&#x27;&#125;&#x27;, &#x27;&#123;&#x27;&#125;,        &#123;&#x27;]&#x27;, &#x27;[&#x27;&#125;    &#125;;        for (char c : s)    &#123;        // 如果是左括号，压入栈中        if (c == &#x27;(&#x27; || c == &#x27;&#123;&#x27; || c == &#x27;[&#x27;)        &#123;            bracketStack.push(c);        &#125;        // 如果是右括号，检查栈顶元素是否匹配        else        &#123;            // 如果栈为空或者栈顶元素与当前右括号不匹配，返回false            if (bracketStack.empty() || bracketStack.top() != bracketMap[c])            &#123;                return false;            &#125;            // 括号匹配，弹出栈顶元素            bracketStack.pop();        &#125;    &#125;        // 如果栈为空，说明所有括号都正确匹配    return bracketStack.empty();&#125;int main()&#123;    string s;    cin &gt;&gt; s;        bool result = isValid(s);        if (result)    &#123;        cout &lt;&lt; &quot;true&quot; &lt;&lt; endl;    &#125;    else    &#123;        cout &lt;&lt; &quot;false&quot; &lt;&lt; endl;    &#125;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(n)，其中 n 是字符串的长度。我们只需要遍历字符串一次。
+空间复杂度：O(n)，最坏情况下，栈的大小可能等于字符串的长度（例如，所有字符都是左括号）。
+
+代码解释
+
+有效的括号问题是栈的经典应用。栈的特点是后进先出（LIFO），这正好符合括号匹配的要求。
+我们使用一个哈希表来存储右括号与左括号的对应关系，这样可以快速检查括号是否匹配。
+遍历字符串时，对于每个字符：
+如果是左括号（’(‘，’{‘，’[‘），则将其压入栈中。
+如果是右括号（’)’，’}’，’]’），则检查栈顶元素是否是对应的左括号：
+如果栈为空或者栈顶元素与当前右括号不匹配，说明括号无效，返回false。
+如果栈顶元素与当前右括号匹配，则弹出栈顶元素，继续遍历。
+
+
+
+
+遍历结束后，如果栈为空，说明所有括号都正确匹配，返回true；否则，说明有左括号没有对应的右括号，返回false。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>桶排序</title>
+    <url>/2025/08/29/%E6%A1%B6%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述桶排序是一种分布式排序算法，它将元素分到有限数量的桶里，每个桶再分别排序（可能使用别的排序算法或者以递归方式继续使用桶排序）。桶排序的核心思想是将待排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。桶内排完序后，再把每个桶里的数据按照顺序依次取出，组成有序序列。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个实数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个实数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 100000 ≤ 数组元素 ≤ 1
+输入样例：
+100.42 0.32 0.33 0.52 0.37 0.47 0.51 0.36 0.45 0.48
+
+输出样例：
+0.32 0.33 0.36 0.37 0.42 0.45 0.47 0.48 0.51 0.52
+
+注意事项
+
+桶排序的时间复杂度取决于桶内排序的时间复杂度，最坏情况下为 O(n²)，平均情况下为 O(n+k)，其中 k 为桶的数量。
+桶排序的空间复杂度为 O(n+k)。
+桶排序是稳定的排序算法。
+桶排序特别适合于均匀分布的数据。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;algorithm&gt;using namespace std;// 桶排序函数void bucketSort(double a[], int n)&#123;    // 创建桶（这里使用10个桶）    vector&lt;vector&lt;double&gt;&gt; buckets(10);        // 将元素分配到桶中    for (int i = 0; i &lt; n; i++)    &#123;        int bucket_index = n * a[i]; // 计算元素应该放入哪个桶        buckets[bucket_index].push_back(a[i]);    &#125;        // 对每个桶内的元素进行排序（这里使用STL的sort函数）    for (int i = 0; i &lt; 10; i++)    &#123;        sort(buckets[i].begin(), buckets[i].end());    &#125;        // 将桶内的元素合并到原数组中    int index = 0;    for (int i = 0; i &lt; 10; i++)    &#123;        for (int j = 0; j &lt; buckets[i].size(); j++)        &#123;            a[index++] = buckets[i][j];        &#125;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    double a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        bucketSort(a, n); // 对整个数组进行桶排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：平均情况下为 O(n+k)，其中 n 为数组的长度，k 为桶的数量。最坏情况下为 O(n²)（当所有元素都被分到同一个桶中时）。
+空间复杂度：O(n+k)。
+
+代码解释
+
+桶排序的核心思想是将待排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。
+在这个实现中，我们创建了10个桶，并假设输入的数据是均匀分布在[0, 1)区间内的。
+我们使用公式 bucket_index &#x3D; n * a[i] 来计算每个元素应该放入哪个桶中。
+然后，我们对每个桶内的元素使用STL的sort函数进行排序。
+最后，我们按照桶的顺序，将每个桶内的元素依次取出，合并到原数组中。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编程输出“Hello,World”</title>
     <url>/2025/08/24/%E7%BC%96%E7%A8%8B%E8%BE%93%E5%87%BA%E2%80%9CHello-World%E2%80%9D/</url>
     <content><![CDATA[题目描述编写一个C++程序，输出“Hello,World!”。
@@ -118,6 +1046,53 @@
 ]]></content>
       <categories>
         <category>程序设计</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计数排序</title>
+    <url>/2025/08/29/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述计数排序是一种非比较型整数排序算法，其时间复杂度为 O(n+k)，其中 n 是待排序元素的个数，k 是整数的范围。计数排序的基本思想是对于每个元素 x，确定小于 x 的元素个数，然后将 x 直接放到最终排序结果中的正确位置上。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 100000 ≤ 数组元素 ≤ 10000
+输入样例：
+104 2 2 8 3 3 1 5 5 0
+
+输出样例：
+0 1 2 2 3 3 4 5 5 8
+
+注意事项
+
+计数排序的时间复杂度为 O(n+k)，空间复杂度为 O(k)。
+计数排序是稳定的排序算法。
+计数排序特别适合于已知范围的整数排序，当 k 较小时，计数排序的效率很高。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;using namespace std;// 计数排序函数void countingSort(int a[], int n, int max_value)&#123;    vector&lt;int&gt; count(max_value + 1, 0); // 计数数组，初始化为0    vector&lt;int&gt; output(n); // 输出数组        // 统计每个元素出现的次数    for (int i = 0; i &lt; n; i++)    &#123;        count[a[i]]++;    &#125;        // 计算每个元素在输出数组中的位置（前缀和）    for (int i = 1; i &lt;= max_value; i++)    &#123;        count[i] += count[i - 1];    &#125;        // 从后向前遍历原数组，保证排序的稳定性    for (int i = n - 1; i &gt;= 0; i--)    &#123;        output[count[a[i]] - 1] = a[i];        count[a[i]]--;    &#125;        // 将排序结果复制回原数组    for (int i = 0; i &lt; n; i++)    &#123;        a[i] = output[i];    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    int max_value = 0;        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];        if (a[i] &gt; max_value)        &#123;            max_value = a[i]; // 找出数组中的最大值        &#125;    &#125;        countingSort(a, n, max_value); // 对整个数组进行计数排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(n+k)，其中 n 为数组的长度，k 为数组中元素的最大值。
+空间复杂度：O(n+k)。
+
+代码解释
+
+计数排序的核心思想是统计每个元素出现的次数，然后根据这些统计信息将元素放到正确的位置上。
+计数排序的实现分为三个步骤：
+统计每个元素出现的次数，存储在计数数组 count 中。
+计算每个元素在输出数组中的位置，这可以通过计算计数数组的前缀和来实现。
+从后向前遍历原数组，将每个元素放到输出数组中的正确位置上，这样可以保证排序的稳定性。
+
+
+最后，将排序结果复制回原数组。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
       </categories>
       <tags>
         <tag>C++</tag>
