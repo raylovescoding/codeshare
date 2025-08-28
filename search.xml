@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>基数排序</title>
+    <url>/2025/08/29/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法（通常是计数排序）。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个非负整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 100000 ≤ 数组元素 ≤ 1000000
+输入样例：
+8170 45 75 90 802 24 2 66
+
+输出样例：
+2 24 45 66 75 90 170 802
+
+注意事项
+
+基数排序的时间复杂度为 O(d*(n+k))，其中 d 是最大数的位数，n 是数组的长度，k 是基数（这里为10）。
+基数排序的空间复杂度为 O(n+k)。
+基数排序是稳定的排序算法。
+基数排序特别适合于整数排序，尤其是当数据范围较大但位数较少时。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;algorithm&gt;using namespace std;// 获取x的第d位数字（从0开始计数）int getDigit(int x, int d)&#123;    int divisor = 1;    for (int i = 0; i &lt; d; i++)    &#123;        divisor *= 10;    &#125;    return (x / divisor) % 10;&#125;// 基数排序函数（从低位到高位排序）void radixSort(int a[], int n)&#123;    // 找出数组中的最大值    int max_value = a[0];    for (int i = 1; i &lt; n; i++)    &#123;        if (a[i] &gt; max_value)        &#123;            max_value = a[i];        &#125;    &#125;        // 计算最大值的位数    int max_digits = 0;    while (max_value &gt; 0)    &#123;        max_digits++;        max_value /= 10;    &#125;        // 创建10个桶（对应0-9这10个数字）    vector&lt;vector&lt;int&gt;&gt; buckets(10);        // 从低位到高位进行排序    for (int d = 0; d &lt; max_digits; d++)    &#123;        // 将元素分配到对应的桶中        for (int i = 0; i &lt; n; i++)        &#123;            int digit = getDigit(a[i], d);            buckets[digit].push_back(a[i]);        &#125;                // 将桶中的元素合并回原数组        int index = 0;        for (int i = 0; i &lt; 10; i++)        &#123;            for (int j = 0; j &lt; buckets[i].size(); j++)            &#123;                a[index++] = buckets[i][j];            &#125;            buckets[i].clear(); // 清空桶，为下一轮排序做准备        &#125;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        radixSort(a, n); // 对整个数组进行基数排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(d*(n+k))，其中 d 是最大数的位数，n 是数组的长度，k 是基数（这里为10）。
+空间复杂度：O(n+k)。
+
+代码解释
+
+基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法。
+在这个实现中，我们从低位到高位进行排序，每一位的排序都使用计数排序的思想（通过桶来实现）。
+首先，我们找出数组中的最大值，并计算其位数。
+然后，我们从最低位开始，对每一位进行排序：
+根据当前位的数字，将元素分配到对应的桶中。
+将桶中的元素按照顺序合并回原数组。
+
+
+重复上述过程，直到所有位都排序完成。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++;排序算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数字反转普通版</title>
     <url>/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/</url>
     <content><![CDATA[题目描述给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。
