@@ -20,27 +20,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="题目描述给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。">
+    <meta name="description" content="题目描述选择排序是一种简单直观的排序算法。它的工作原理是每次从未排序的部分选出最小（或最大）的元素，放到已排序部分的末尾，直到所有元素均排序完毕。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数字反转普通版">
-<meta property="og:url" content="http://example.com/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/index.html">
+<meta property="og:title" content="选择排序">
+<meta property="og:url" content="http://example.com/2025/08/29/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="codeshare">
-<meta property="og:description" content="题目描述给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。">
+<meta property="og:description" content="题目描述选择排序是一种简单直观的排序算法。它的工作原理是每次从未排序的部分选出最小（或最大）的元素，放到已排序部分的末尾，直到所有元素均排序完毕。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-08-28T03:43:19.000Z">
-<meta property="article:modified_time" content="2025-08-28T03:58:44.255Z">
+<meta property="article:published_time" content="2025-08-29T02:30:00.000Z">
+<meta property="article:modified_time" content="2025-08-28T05:08:35.895Z">
 <meta property="article:author" content="Ray">
-<meta property="article:tag" content="C++;">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/">
+<link rel="canonical" href="http://example.com/2025/08/29/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/","path":"2025/08/28/数字反转普通版/","title":"数字反转普通版"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2025/08/29/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/","path":"2025/08/29/选择排序/","title":"选择排序"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>数字反转普通版 | codeshare</title>
+<title>选择排序 | codeshare</title>
   
 
 
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/29/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -227,12 +227,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="数字反转普通版 | codeshare">
+      <meta itemprop="name" content="选择排序 | codeshare">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数字反转普通版
+          选择排序
         </h1>
 
         <div class="post-meta-container">
@@ -242,9 +242,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2025-08-28 11:43:19 / Modified: 11:58:44" itemprop="dateCreated datePublished" datetime="2025-08-28T11:43:19+08:00">2025-08-28</time>
+      <time title="Created: 2025-08-29 10:30:00" itemprop="dateCreated datePublished" datetime="2025-08-29T10:30:00+08:00">2025-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-08-28 13:08:35" itemprop="dateModified" datetime="2025-08-28T13:08:35+08:00">2025-08-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -265,43 +271,36 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p><strong>题目描述</strong><br>给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。</p>
+    <div class="post-body" itemprop="articleBody"><p><strong>题目描述</strong><br>选择排序是一种简单直观的排序算法。它的工作原理是每次从未排序的部分选出最小（或最大）的元素，放到已排序部分的末尾，直到所有元素均排序完毕。</p>
 <span id="more"></span>
-<p><strong>输入格式</strong><br>输入共 1 行，一个整数 N。</p>
-<p><strong>输出格式</strong><br>输出共 1 行，一个整数，表示反转后的新数。</p>
-<p><strong>数据范围</strong><br>-1,000,000,000 ≤ N≤ 1,000,000,000。</p>
-<p><strong>输入样例1：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">123</span><br></pre></td></tr></table></figure>
+<p><strong>输入格式</strong><br>输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。</p>
+<p><strong>输出格式</strong><br>输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。</p>
+<p><strong>数据范围</strong><br>1 ≤ n ≤ 1000<br>-1000 ≤ 数组元素 ≤ 1000</p>
+<p><strong>输入样例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">6</span><br><span class="line">8 4 2 5 1 7</span><br></pre></td></tr></table></figure>
 
-<p><strong>输出样例1：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">321</span><br></pre></td></tr></table></figure>
-
-<p><strong>输入样例2：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-380</span><br></pre></td></tr></table></figure>
-
-<p><strong>输出样例2：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-83</span><br></pre></td></tr></table></figure>
+<p><strong>输出样例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 2 4 5 7 8</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意事项</strong></p>
 <ul>
-<li>当输入的整数为负数时，需要在反转后保持负号。</li>
-<li>反转后的整数不能超过 int 类型的范围。</li>
+<li>选择排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。</li>
+<li>选择排序是不稳定的排序算法。</li>
 </ul>
 <p><strong>代码实现</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (n)</span><br><span class="line">    &#123;</span><br><span class="line">        res = res * <span class="number">10</span> + n % <span class="number">10</span>;</span><br><span class="line">        n /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; res &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="type">int</span> a[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 选择排序</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> min_index = i; <span class="comment">// 记录当前未排序部分中最小元素的索引</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = i + <span class="number">1</span>; j &lt; n; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[j] &lt; a[min_index])</span><br><span class="line">            &#123;</span><br><span class="line">                min_index = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将找到的最小元素与未排序部分的第一个元素交换</span></span><br><span class="line">        <span class="keyword">if</span> (min_index != i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> temp = a[i];</span><br><span class="line">            a[i] = a[min_index];</span><br><span class="line">            a[min_index] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输出排序后的数组</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; a[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>时间复杂度</strong></p>
 <ul>
-<li>时间复杂度：O(logn)，其中 n 为输入的整数。</li>
+<li>时间复杂度：O(n²)，其中 n 为数组的长度。</li>
 <li>空间复杂度：O(1)。</li>
 </ul>
 <p><strong>代码解释</strong></p>
 <ul>
-<li>我们使用一个循环来反转整数的每一位。</li>
-<li>在每一次循环中，我们将整数 n 对 10 取模，得到 n 的个位数，将个位数添加到结果 res 的末尾。</li>
-<li>然后，我们将整数 n 除以 10，去掉个位数。</li>
-<li>重复以上步骤，直到整数 n 变为 0。</li>
-<li>最后，输出结果 res。</li>
+<li>我们使用两层循环来实现选择排序。外层循环控制已排序部分的末尾位置，内层循环在未排序部分中寻找最小元素。</li>
+<li>在每一轮中，我们从未排序部分（从i+1到n-1）找到最小的元素，并记录其索引。</li>
+<li>然后将找到的最小元素与未排序部分的第一个元素（即位置i的元素）交换位置。</li>
+<li>重复上述过程，直到整个数组排序完成。</li>
 </ul>
 
     </div>
@@ -312,21 +311,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/C/" rel="tag"># C++;</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2025/08/24/%E7%BC%96%E7%A8%8B%E8%BE%93%E5%87%BA%E2%80%9CHello-World%E2%80%9D/" rel="prev" title="编程输出“Hello,World”">
-                  <i class="fa fa-angle-left"></i> 编程输出“Hello,World”
+                <a href="/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/" rel="prev" title="数字反转普通版">
+                  <i class="fa fa-angle-left"></i> 数字反转普通版
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/08/29/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" rel="next" title="选择排序">
-                  选择排序 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
