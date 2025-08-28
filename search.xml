@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>编程输出“Hello,World”</title>
-    <url>/2025/08/24/%E7%BC%96%E7%A8%8B%E8%BE%93%E5%87%BA%E2%80%9CHello-World%E2%80%9D/</url>
-    <content><![CDATA[题目描述编写一个C++程序，输出“Hello,World!”。
-
-输入无
-输出Hello,World!
-代码
-#include &lt;iostream&gt;using namespace std;int main()&#123;    cout &lt;&lt; &quot;Hello,World!&quot; &lt;&lt; endl;    return 0;&#125;
-代码解释
-
-包含头文件iostream，用于输入输出流。
-使用命名空间std，避免使用std::前缀。
-定义主函数main，程序从这里开始执行。
-使用cout输出“Hello,World!”，endl表示换行。
-返回0表示程序正常结束。
-
-]]></content>
-      <categories>
-        <category>程序设计</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数字反转普通版</title>
     <url>/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/</url>
     <content><![CDATA[题目描述给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。
@@ -72,6 +47,31 @@
       </categories>
       <tags>
         <tag>C++;</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编程输出“Hello,World”</title>
+    <url>/2025/08/24/%E7%BC%96%E7%A8%8B%E8%BE%93%E5%87%BA%E2%80%9CHello-World%E2%80%9D/</url>
+    <content><![CDATA[题目描述编写一个C++程序，输出“Hello,World!”。
+
+输入无
+输出Hello,World!
+代码
+#include &lt;iostream&gt;using namespace std;int main()&#123;    cout &lt;&lt; &quot;Hello,World!&quot; &lt;&lt; endl;    return 0;&#125;
+代码解释
+
+包含头文件iostream，用于输入输出流。
+使用命名空间std，避免使用std::前缀。
+定义主函数main，程序从这里开始执行。
+使用cout输出“Hello,World!”，endl表示换行。
+返回0表示程序正常结束。
+
+]]></content>
+      <categories>
+        <category>程序设计</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
       </tags>
   </entry>
 </search>
