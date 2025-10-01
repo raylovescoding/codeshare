@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="string 常见函数（1）string的查找和截取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串—C++">
+<meta property="og:url" content="http://example.com/2025/10/01/%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%94C/index.html">
+<meta property="og:site_name" content="codeshare">
+<meta property="og:description" content="string 常见函数（1）string的查找和截取">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-01T03:49:30.000Z">
+<meta property="article:modified_time" content="2025-10-01T04:47:41.413Z">
+<meta property="article:author" content="Ray">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2025/10/01/%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%94C/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2025/10/01/%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%94C/","path":"2025/10/01/字符串—C/","title":"字符串—C++"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>字符串—C++ | codeshare</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.1/pdfobject.min.js","integrity":"sha256-jI72I8ZLVflVOisZIOaLvRew3tyvzeu6aZXFm7P7dEo="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js" defer></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">codeshare</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ray</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/01/%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%94C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ray">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="codeshare">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="字符串—C++ | codeshare">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字符串—C++
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2025-10-01 11:49:30 / Modified: 12:47:41" itemprop="dateCreated datePublished" datetime="2025-10-01T11:49:30+08:00">2025-10-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">算法基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>string 常见函数<br>（1）string的查找和截取</p>
+<span id="more"></span>
+<p>■ find   (子串substr): 查找子字符串第一次出现的下标，没有返回string::npos  ( 注意判断其为-1);<br>■ find(substr,x):  在字符串的下标x 之后，查找子串substr;<br>■ substr  (开始位置i,  子串长度len):      截取子字符串，当len&gt; 字符串长度的时候，只取剩余的；<br>■ substr    (开始位置i):      截取子字符串，从下标为i  开始截取到最后；<br>（2）string 的删除、插入和替换 相 关 函 数<br>■  erase(开始下标i, 删除长度len): 删除字符串第i 个下标开始的len个字符；<br>■  erase ( 开始下标i):  删 除 字 符 串 第i 个下标开始往后的所有字符；<br>■  insert (插入下标，插入字符串s):  在 字 符 串 下 标 为i 的位置插入 一 个字符串s;<br>■ replace(i,len,str): 从下标为i 开始，替换len个字符为str<br>（3）字符类型判断&#x2F;转换，数组&#x2F;string排序相关函数<br>■   字符类型判断函数：(非string 函数) <br>√  isalpha©:  判 断c 是否为字母<br>√  islower©:  判断是否为小写 <br>√  isupper©:   判断是否为大写<br>√  isdigit©:    判断是否为数字   说 明 ：返回非0表示真，返回0表示假；<br>■  字符类型转换函数：(非string 函数) <br>√  tolower©:   字符转小写<br>√  toupper©:   字符转大写 说明：  返 回i n t   ;<br>■  排序和倒序函数(非string 函 数 )<br>√  sort  (起始地址，结束地址+1): 数组升序排序 <br>√ reverse  (起始地址，结束地址+1): 数组逆序<br>■  获取头尾指针<br>√  s.begin():       获取字符串s  的头位置(指针)<br>√  s.end():           获取字符串s  的尾位置(最后一个字符后面的位置)(指针)<br>注意：数组的本质是数组中下标为0的元素的地址；(首元素的地址)</p>
+<p><strong>例题</strong><br>1.打印小写字母表（基础）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    for (char c = &#x27;a&#x27;; c &lt;= &#x27;z&#x27;; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.判断是否构成回文（基础）<br>方法一：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    string s;</span><br><span class="line">    cin &gt;&gt; s;</span><br><span class="line">    int n = s.size();</span><br><span class="line">    for (int i = 0; i &lt; n / 2; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if (s[i] != s[n - 1 - i])</span><br><span class="line">        &#123;</span><br><span class="line">            cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; &quot;Yes&quot; &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法二：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;bits/stdc++.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">bool huiwen(string s1) &#123;</span><br><span class="line">    string s2 = s1;</span><br><span class="line">    reverse(s2.begin(), s2.end());</span><br><span class="line">    return s1 == s2; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    string s, s1;</span><br><span class="line">    cin &gt;&gt; s;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; s.size(); i++) &#123;</span><br><span class="line">        if (s[i] != &#x27;.&#x27;)</span><br><span class="line">            s1 += s[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (huiwen(s1))</span><br><span class="line">        cout &lt;&lt; &quot;TRUE&quot;;</span><br><span class="line">    else</span><br><span class="line">        cout &lt;&lt; &quot;FALSE&quot;;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.字符串加密（入门）<br><strong>描述</strong><br>在情报传递过程中，为了防止情报被截获，往往需要对情报用一定的方式加密，简单的加密算法虽然不足以完全避免情报被破译，但仍然能防止情报被轻易的识别。</p>
+<p>我们给出一种最简的的加密方法，对给定的一个字符串，把其中从<br>a−y ，A−Y 的字母用其后继字母替代，把 z 和 Z 用 a 和 A 替代，其他非字母字符不变，则可得到一个简单的加密字符串。<br><strong>输入描述</strong><br>输入一行，包含一个字符串，长度不超过 80 个字符。<br><strong>输出描述</strong><br>输出每行字符串的加密字符串。<br><strong>用例输入1</strong><br>Hello! How are you!<br><strong>用例输出1</strong><br>Ifmmp! Ipx bsf zpv!<br><strong>参考代码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    string s;</span><br><span class="line">    getline(cin, s);</span><br><span class="line">    for (int i = 0; i &lt; s.size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if (isalpha(s[i]))</span><br><span class="line">        &#123;</span><br><span class="line">            if (s[i] == &#x27;z&#x27;)</span><br><span class="line">                s[i] = &#x27;a&#x27;;</span><br><span class="line">            else if (s[i] == &#x27;Z&#x27;)</span><br><span class="line">                s[i] = &#x27;A&#x27;;</span><br><span class="line">            else</span><br><span class="line">                s[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4.求子串的位置（入门）<br><strong>描述</strong><br>请问在一个父字符串 s 中是否存在子字符串 t 。如果存在，则输出子字符串 t 在父字符串中所有的起始位置，如果不存在，则输出 -1 。<br>比如：假设父字符串 s&#x3D;Go Abc good goole，子字符串 t&#x3D;go ，那么输出位置：<br>8<br>13<br><strong>说明</strong><br>请分别用 find 及 substr 两种方法求解。<br><strong>输入描述</strong><br>第一行输入父字符串的值（字符串长度不超过 100）。<br>第二行输入子字符串的值（子字符串长度不超过 100 ）。<br><strong>输出描述</strong><br>输出子字符串在父字符串中所有的位置，如果父字符串中不存在子字符串，请输出 -1 。<br><strong>用例输入1</strong><br>Go Abc good goole!<br>go<br><strong>用例输出1</strong><br>8<br>13<br>用例输入2<br>Go Abc good goole!<br>Good<br><strong>用例输出2</strong><br>-1<br><strong>参考代码</strong><br>方法一：（find）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    string s, t;</span><br><span class="line">    getline(cin, s);</span><br><span class="line">    getline(cin, t);</span><br><span class="line">    int pos = s.find(t);</span><br><span class="line">    while (pos != string::npos)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; pos &lt;&lt; endl;</span><br><span class="line">        pos = s.find(t, pos + 1);</span><br><span class="line">    &#125;</span><br><span class="line">    if (pos == string::npos)</span><br><span class="line">        cout &lt;&lt; -1 &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法二：（substr）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    string s, t;</span><br><span class="line">    getline(cin, s);</span><br><span class="line">    getline(cin, t);</span><br><span class="line">    int n = s.size(), m = t.size();</span><br><span class="line">    for (int i = 0; i &lt;= n - m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if (s.substr(i, m) == t)</span><br><span class="line">            cout &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    if (n &lt; m)</span><br><span class="line">        cout &lt;&lt; -1 &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>5.计算表达式（提升）<br><strong>描述</strong><br>表达式的形式如：3+5∗6−4 其中, 运算数为一位整数,运算符为<br>+、−、∗三种，且运算符没有优先级的区分，一律自左向右计算。 如上例的计算过程为：3+5∗6−4&#x3D;8∗6−4&#x3D;48−4&#x3D;44<br><strong>输入描述</strong><br>一行，即表达式字符串。（长度小于 100）<br><strong>输出描述</strong><br>一个整数，即表达式的计算结果（结果在−20000至20000之间）<br><strong>用例输入1</strong><br>3+5*6-4<br><strong>用例输出1</strong><br>44<br><strong>参考代码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    string s;</span><br><span class="line">    cin &gt;&gt; s;</span><br><span class="line">    int n = s.size();</span><br><span class="line">    int res = s[0] - &#x27;0&#x27;;</span><br><span class="line">    for (int i = 1; i &lt; n; i += 2)</span><br><span class="line">    &#123;</span><br><span class="line">        if (s[i] == &#x27;+&#x27;)</span><br><span class="line">            res += s[i + 1] - &#x27;0&#x27;;</span><br><span class="line">        else if (s[i] == &#x27;-&#x27;)</span><br><span class="line">            res -= s[i + 1] - &#x27;0&#x27;;</span><br><span class="line">        else if (s[i] == &#x27;*&#x27;)</span><br><span class="line">            res *= s[i + 1] - &#x27;0&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; res &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/29/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" rel="prev" title="合并两个有序链表">
+                  <i class="fa fa-angle-left"></i> 合并两个有序链表
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ray</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
