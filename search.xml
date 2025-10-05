@@ -1,93 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>两数之和</title>
-    <url>/2025/08/29/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
-    <content><![CDATA[题目描述给定一个整数数组 nums 和一个目标值 target，要求在数组中找出和为目标值的两个整数，并返回它们的数组下标。假设每种输入只会对应一个答案，且数组中同一个元素不能使用两遍。
+    <title>二分法求平方根</title>
+    <url>/2025/08/29/%E4%BA%8C%E5%88%86%E6%B3%95%E6%B1%82%E5%B9%B3%E6%96%B9%E6%A0%B9/</url>
+    <content><![CDATA[题目描述平方根的计算是一个常见的数值计算问题。给定一个非负实数 x，求其平方根，即找到一个数 r，使得 r² &#x3D; x。本问题要求使用二分法来计算平方根，结果保留6位小数。
 
-输入格式输入共 3 行：
-
-第一行包含一个整数 n，表示数组的长度。
-第二行包含 n 个整数，表示数组 nums 的元素。
-第三行包含一个整数 target，表示目标值。
-
-输出格式输出共 1 行，包含两个整数，表示和为目标值的两个元素的数组下标，中间用空格分隔。
-数据范围2 ≤ n ≤ 10^4-10^9 ≤ nums[i] ≤ 10^9-10^9 ≤ target ≤ 10^9
+输入格式输入共 1 行，包含一个非负实数 x。
+输出格式输出共 1 行，包含 x 的平方根，结果保留6位小数。
+数据范围0 ≤ x ≤ 10000
 输入样例1：
-42 7 11 159
+2
 
 输出样例1：
-0 1
+1.414214
 
 输入样例2：
-33 2 46
+16
 
 输出样例2：
-1 2
+4.000000
 
 注意事项
 
-可以假设每种输入只会对应一个答案，但不能重复利用数组中的同一个元素。
-暴力枚举法的时间复杂度为O(n²)，对于大规模数据可能会超时。
-使用哈希表可以将时间复杂度降低到O(n)，空间复杂度为O(n)。
+二分法求平方根的基本思想是在一个合理的范围内不断缩小查找区间，直到达到所需的精度。
+对于非负实数 x，其平方根的范围是 [0, max(x, 1)]。
+需要设置一个精度阈值，当查找区间的长度小于该阈值时，认为已经找到足够精确的结果。
 
 代码实现
-#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;unordered_map&gt;using namespace std;// 方法一：暴力枚举法vector&lt;int&gt; twoSumBruteForce(vector&lt;int&gt;&amp; nums, int target)&#123;    int n = nums.size();    for (int i = 0; i &lt; n; i++)    &#123;        for (int j = i + 1; j &lt; n; j++)        &#123;            if (nums[i] + nums[j] == target)            &#123;                return &#123;i, j&#125;;            &#125;        &#125;    &#125;    return &#123;&#125;; // 没有找到符合条件的两个数&#125;// 方法二：哈希表法（更高效）vector&lt;int&gt; twoSumHashTable(vector&lt;int&gt;&amp; nums, int target)&#123;    unordered_map&lt;int, int&gt; numMap;    int n = nums.size();        // 遍历数组，寻找符合条件的两个数    for (int i = 0; i &lt; n; i++)    &#123;        int complement = target - nums[i];                // 检查complement是否在哈希表中        if (numMap.find(complement) != numMap.end())        &#123;            return &#123;numMap[complement], i&#125;;        &#125;                // 将当前元素及其下标加入哈希表        numMap[nums[i]] = i;    &#125;        return &#123;&#125;; // 没有找到符合条件的两个数&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; nums[i];    &#125;        int target;    cin &gt;&gt; target;        // 使用哈希表法求解（更高效）    vector&lt;int&gt; result = twoSumHashTable(nums, target);        // 如果要使用暴力枚举法，可以取消下面这行的注释，并注释掉上面这行    // vector&lt;int&gt; result = twoSumBruteForce(nums, target);        if (!result.empty())    &#123;        cout &lt;&lt; result[0] &lt;&lt; &quot; &quot; &lt;&lt; result[1] &lt;&lt; endl;    &#125;        return 0;&#125;
+#include &lt;iostream&gt;#include &lt;iomanip&gt;using namespace std;// 二分法计算平方根double sqrtBinarySearch(double x, double precision)&#123;    // 处理特殊情况    if (x == 0 || x == 1)    &#123;        return x;    &#125;        double left, right;    // 确定查找范围    if (x &lt; 1)    &#123;        left = x;        right = 1;    &#125;    else    &#123;        left = 1;        right = x;    &#125;        // 二分查找    while (right - left &gt; precision)    &#123;        double mid = left + (right - left) / 2;        double mid_squared = mid * mid;                if (mid_squared == x)        &#123;            return mid; // 找到精确的平方根        &#125;        else if (mid_squared &lt; x)        &#123;            left = mid; // 在右半部分继续查找        &#125;        else        &#123;            right = mid; // 在左半部分继续查找        &#125;    &#125;        // 返回区间中点作为结果    return (left + right) / 2;&#125;int main()&#123;    double x;    cin &gt;&gt; x;        double precision = 1e-8; // 设置精度阈值（比要求的6位小数更高，以确保结果正确）    double result = sqrtBinarySearch(x, precision);        // 输出结果，保留6位小数    cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
 
 时间复杂度
 
-暴力枚举法时间复杂度：O(n²)，其中 n 是数组的长度。
-哈希表法时间复杂度：O(n)，其中 n 是数组的长度。
-空间复杂度：O(1)（暴力枚举法）或 O(n)（哈希表法，用于存储哈希表）。
-
-代码解释
-
-两数之和问题是一个经典的算法问题，可以用暴力枚举法或哈希表法来解决。
-暴力枚举法的思想很简单：使用两层循环，遍历数组中所有可能的两个元素组合，检查它们的和是否等于目标值。这种方法的时间复杂度较高，但实现简单。
-哈希表法的思想是：使用一个哈希表来存储已经遍历过的元素及其下标。在遍历数组的过程中，对于当前元素，我们计算它与目标值的差值，然后检查这个差值是否已经在哈希表中。如果在，则找到了符合条件的两个数；否则，将当前元素及其下标加入哈希表。这种方法的时间复杂度较低，但需要额外的空间来存储哈希表。
-在实际应用中，哈希表法通常是更好的选择，因为它的时间复杂度更低。
-
-]]></content>
-      <categories>
-        <category>算法基础</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>冒泡排序</title>
-    <url>/2025/08/29/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[题目描述冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢”浮”到数列的顶端。
-
-输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
-输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
-数据范围1 ≤ n ≤ 1000-1000 ≤ 数组元素 ≤ 1000
-输入样例：
-53 1 4 2 5
-
-输出样例：
-1 2 3 4 5
-
-注意事项
-
-冒泡排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。
-冒泡排序是稳定的排序算法。
-
-代码实现
-#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        // 冒泡排序    for (int i = 0; i &lt; n - 1; i++)    &#123;        for (int j = 0; j &lt; n - 1 - i; j++)        &#123;            if (a[j] &gt; a[j + 1])            &#123;                // 交换a[j]和a[j+1]                int temp = a[j];                a[j] = a[j + 1];                a[j + 1] = temp;            &#125;        &#125;    &#125;        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
-
-时间复杂度
-
-时间复杂度：O(n²)，其中 n 为数组的长度。
+时间复杂度：O(log(x&#x2F;precision))，其中 x 是输入的非负实数，precision 是精度阈值。
 空间复杂度：O(1)。
 
 代码解释
 
-我们使用两层循环来实现冒泡排序。外层循环控制排序的轮数，内层循环控制每轮比较的次数。
-在每一轮中，我们比较相邻的两个元素，如果它们的顺序错误（前面的元素大于后面的元素），就交换它们的位置。
-每轮结束后，最大的元素会被”冒泡”到数组的末尾。
-重复上述过程，直到整个数组排序完成。
+二分法求平方根的核心思想是在一个合理的范围内不断缩小查找区间，直到达到所需的精度。
+对于非负实数 x，我们需要确定一个合理的查找范围：
+如果 x &lt; 1，那么平方根的范围是 [x, 1]。
+如果 x ≥ 1，那么平方根的范围是 [1, x]。
+
+
+在每次迭代中，我们计算区间中点 mid，并计算 mid²。然后根据 mid² 与 x 的大小关系，调整查找区间：
+如果 mid² &lt; x，说明平方根在 [mid, right] 范围内。
+如果 mid² &gt; x，说明平方根在 [left, mid] 范围内。
+
+
+重复上述过程，直到查找区间的长度小于设定的精度阈值。
+最后，返回区间中点作为平方根的近似值。
 
 ]]></content>
       <categories>
@@ -148,54 +109,112 @@
       </tags>
   </entry>
   <entry>
-    <title>二分法求平方根</title>
-    <url>/2025/08/29/%E4%BA%8C%E5%88%86%E6%B3%95%E6%B1%82%E5%B9%B3%E6%96%B9%E6%A0%B9/</url>
-    <content><![CDATA[题目描述平方根的计算是一个常见的数值计算问题。给定一个非负实数 x，求其平方根，即找到一个数 r，使得 r² &#x3D; x。本问题要求使用二分法来计算平方根，结果保留6位小数。
+    <title>两数之和</title>
+    <url>/2025/08/29/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[题目描述给定一个整数数组 nums 和一个目标值 target，要求在数组中找出和为目标值的两个整数，并返回它们的数组下标。假设每种输入只会对应一个答案，且数组中同一个元素不能使用两遍。
 
-输入格式输入共 1 行，包含一个非负实数 x。
-输出格式输出共 1 行，包含 x 的平方根，结果保留6位小数。
-数据范围0 ≤ x ≤ 10000
+输入格式输入共 3 行：
+
+第一行包含一个整数 n，表示数组的长度。
+第二行包含 n 个整数，表示数组 nums 的元素。
+第三行包含一个整数 target，表示目标值。
+
+输出格式输出共 1 行，包含两个整数，表示和为目标值的两个元素的数组下标，中间用空格分隔。
+数据范围2 ≤ n ≤ 10^4-10^9 ≤ nums[i] ≤ 10^9-10^9 ≤ target ≤ 10^9
 输入样例1：
-2
+42 7 11 159
 
 输出样例1：
-1.414214
+0 1
 
 输入样例2：
-16
+33 2 46
 
 输出样例2：
-4.000000
+1 2
 
 注意事项
 
-二分法求平方根的基本思想是在一个合理的范围内不断缩小查找区间，直到达到所需的精度。
-对于非负实数 x，其平方根的范围是 [0, max(x, 1)]。
-需要设置一个精度阈值，当查找区间的长度小于该阈值时，认为已经找到足够精确的结果。
+可以假设每种输入只会对应一个答案，但不能重复利用数组中的同一个元素。
+暴力枚举法的时间复杂度为O(n²)，对于大规模数据可能会超时。
+使用哈希表可以将时间复杂度降低到O(n)，空间复杂度为O(n)。
 
 代码实现
-#include &lt;iostream&gt;#include &lt;iomanip&gt;using namespace std;// 二分法计算平方根double sqrtBinarySearch(double x, double precision)&#123;    // 处理特殊情况    if (x == 0 || x == 1)    &#123;        return x;    &#125;        double left, right;    // 确定查找范围    if (x &lt; 1)    &#123;        left = x;        right = 1;    &#125;    else    &#123;        left = 1;        right = x;    &#125;        // 二分查找    while (right - left &gt; precision)    &#123;        double mid = left + (right - left) / 2;        double mid_squared = mid * mid;                if (mid_squared == x)        &#123;            return mid; // 找到精确的平方根        &#125;        else if (mid_squared &lt; x)        &#123;            left = mid; // 在右半部分继续查找        &#125;        else        &#123;            right = mid; // 在左半部分继续查找        &#125;    &#125;        // 返回区间中点作为结果    return (left + right) / 2;&#125;int main()&#123;    double x;    cin &gt;&gt; x;        double precision = 1e-8; // 设置精度阈值（比要求的6位小数更高，以确保结果正确）    double result = sqrtBinarySearch(x, precision);        // 输出结果，保留6位小数    cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; result &lt;&lt; endl;        return 0;&#125;
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;unordered_map&gt;using namespace std;// 方法一：暴力枚举法vector&lt;int&gt; twoSumBruteForce(vector&lt;int&gt;&amp; nums, int target)&#123;    int n = nums.size();    for (int i = 0; i &lt; n; i++)    &#123;        for (int j = i + 1; j &lt; n; j++)        &#123;            if (nums[i] + nums[j] == target)            &#123;                return &#123;i, j&#125;;            &#125;        &#125;    &#125;    return &#123;&#125;; // 没有找到符合条件的两个数&#125;// 方法二：哈希表法（更高效）vector&lt;int&gt; twoSumHashTable(vector&lt;int&gt;&amp; nums, int target)&#123;    unordered_map&lt;int, int&gt; numMap;    int n = nums.size();        // 遍历数组，寻找符合条件的两个数    for (int i = 0; i &lt; n; i++)    &#123;        int complement = target - nums[i];                // 检查complement是否在哈希表中        if (numMap.find(complement) != numMap.end())        &#123;            return &#123;numMap[complement], i&#125;;        &#125;                // 将当前元素及其下标加入哈希表        numMap[nums[i]] = i;    &#125;        return &#123;&#125;; // 没有找到符合条件的两个数&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; nums[i];    &#125;        int target;    cin &gt;&gt; target;        // 使用哈希表法求解（更高效）    vector&lt;int&gt; result = twoSumHashTable(nums, target);        // 如果要使用暴力枚举法，可以取消下面这行的注释，并注释掉上面这行    // vector&lt;int&gt; result = twoSumBruteForce(nums, target);        if (!result.empty())    &#123;        cout &lt;&lt; result[0] &lt;&lt; &quot; &quot; &lt;&lt; result[1] &lt;&lt; endl;    &#125;        return 0;&#125;
 
 时间复杂度
 
-时间复杂度：O(log(x&#x2F;precision))，其中 x 是输入的非负实数，precision 是精度阈值。
-空间复杂度：O(1)。
+暴力枚举法时间复杂度：O(n²)，其中 n 是数组的长度。
+哈希表法时间复杂度：O(n)，其中 n 是数组的长度。
+空间复杂度：O(1)（暴力枚举法）或 O(n)（哈希表法，用于存储哈希表）。
 
 代码解释
 
-二分法求平方根的核心思想是在一个合理的范围内不断缩小查找区间，直到达到所需的精度。
-对于非负实数 x，我们需要确定一个合理的查找范围：
-如果 x &lt; 1，那么平方根的范围是 [x, 1]。
-如果 x ≥ 1，那么平方根的范围是 [1, x]。
+两数之和问题是一个经典的算法问题，可以用暴力枚举法或哈希表法来解决。
+暴力枚举法的思想很简单：使用两层循环，遍历数组中所有可能的两个元素组合，检查它们的和是否等于目标值。这种方法的时间复杂度较高，但实现简单。
+哈希表法的思想是：使用一个哈希表来存储已经遍历过的元素及其下标。在遍历数组的过程中，对于当前元素，我们计算它与目标值的差值，然后检查这个差值是否已经在哈希表中。如果在，则找到了符合条件的两个数；否则，将当前元素及其下标加入哈希表。这种方法的时间复杂度较低，但需要额外的空间来存储哈希表。
+在实际应用中，哈希表法通常是更好的选择，因为它的时间复杂度更低。
 
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反转链表</title>
+    <url>/2025/08/29/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[题目描述给你单链表的头节点 head，请你反转链表，并返回反转后的链表的头节点。
 
-在每次迭代中，我们计算区间中点 mid，并计算 mid²。然后根据 mid² 与 x 的大小关系，调整查找区间：
-如果 mid² &lt; x，说明平方根在 [mid, right] 范围内。
-如果 mid² &gt; x，说明平方根在 [left, mid] 范围内。
+输入格式输入共 2 行：
 
+第一行包含一个整数 n，表示链表的长度。
+第二行包含 n 个整数，表示链表的节点值，按链表顺序给出。
 
-重复上述过程，直到查找区间的长度小于设定的精度阈值。
-最后，返回区间中点作为平方根的近似值。
+输出格式输出共 1 行，包含 n 个整数，表示反转后的链表的节点值，按链表顺序给出。
+数据范围链表中节点的数目在范围 [0, 5000] 内-5000 ≤ Node.val ≤ 5000
+输入样例1：
+51 2 3 4 5
+
+输出样例1：
+5 4 3 2 1
+
+输入样例2：
+21 2
+
+输出样例2：
+2 1
+
+输入样例3：
+11
+
+输出样例3：
+1
+
+注意事项
+
+可以使用迭代或递归的方法来反转链表。
+迭代方法的时间复杂度为O(n)，空间复杂度为O(1)。
+递归方法的时间复杂度为O(n)，空间复杂度为O(n)，因为递归调用会使用栈空间。
+在本题中，为了方便输入输出，我们将使用数组来模拟链表的输入，并将反转后的链表转换为数组输出。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;vector&gt;using namespace std;// 定义链表节点结构struct ListNode &#123;    int val;    ListNode *next;    ListNode() : val(0), next(nullptr) &#123;&#125;    ListNode(int x) : val(x), next(nullptr) &#123;&#125;    ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;&#125;;// 方法一：迭代反转链表ListNode* reverseListIterative(ListNode* head)&#123;    ListNode* prev = nullptr;    ListNode* curr = head;        while (curr != nullptr) &#123;        ListNode* nextTemp = curr-&gt;next; // 保存下一个节点        curr-&gt;next = prev;              // 反转当前节点的指针        prev = curr;                    // 移动prev指针        curr = nextTemp;                // 移动curr指针    &#125;        return prev; // prev现在是新的头节点&#125;// 方法二：递归反转链表ListNode* reverseListRecursive(ListNode* head)&#123;    // 基本情况：空链表或只有一个节点    if (head == nullptr || head-&gt;next == nullptr) &#123;        return head;    &#125;        // 递归反转剩余部分    ListNode* newHead = reverseListRecursive(head-&gt;next);        // 反转当前节点和下一个节点的连接    head-&gt;next-&gt;next = head;    head-&gt;next = nullptr;        return newHead;&#125;// 从数组创建链表ListNode* createList(vector&lt;int&gt;&amp; nums)&#123;    if (nums.empty()) &#123;        return nullptr;    &#125;        ListNode* head = new ListNode(nums[0]);    ListNode* current = head;        for (int i = 1; i &lt; nums.size(); i++) &#123;        current-&gt;next = new ListNode(nums[i]);        current = current-&gt;next;    &#125;        return head;&#125;// 从链表创建数组（用于输出）vector&lt;int&gt; listToArray(ListNode* head)&#123;    vector&lt;int&gt; result;    ListNode* current = head;        while (current != nullptr) &#123;        result.push_back(current-&gt;val);        current = current-&gt;next;    &#125;        return result;&#125;// 释放链表内存void deleteList(ListNode* head)&#123;    ListNode* current = head;    while (current != nullptr) &#123;        ListNode* next = current-&gt;next;        delete current;        current = next;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; nums[i];    &#125;        // 创建链表    ListNode* head = createList(nums);        // 使用迭代方法反转链表    ListNode* reversedHead = reverseListIterative(head);        // 如果要使用递归方法，可以取消下面这行的注释，并注释掉上面这行    // ListNode* reversedHead = reverseListRecursive(head);        // 将反转后的链表转换为数组并输出    vector&lt;int&gt; result = listToArray(reversedHead);    for (int i = 0; i &lt; result.size(); i++) &#123;        cout &lt;&lt; result[i];        if (i != result.size() - 1) &#123;            cout &lt;&lt; &quot; &quot;;        &#125;    &#125;    cout &lt;&lt; endl;        // 释放内存    deleteList(reversedHead);        return 0;&#125;
+
+时间复杂度
+
+迭代方法时间复杂度：O(n)，其中 n 是链表的长度。我们只需要遍历链表一次。
+递归方法时间复杂度：O(n)，其中 n 是链表的长度。递归调用的次数等于链表的长度。
+空间复杂度：O(1)（迭代方法）或 O(n)（递归方法，由递归调用栈占用的空间）。
+
+代码解释
+
+反转链表是链表操作中的一个基础问题，可以用迭代或递归的方法解决。
+迭代方法的核心思想是维护三个指针：prev（前一个节点）、curr（当前节点）和nextTemp（下一个节点）。在遍历链表的过程中，我们将当前节点的next指针指向前一个节点，然后移动这三个指针，直到遍历完整个链表。
+递归方法的核心思想是先递归反转链表的剩余部分，然后反转当前节点和下一个节点的连接。递归的基本情况是空链表或只有一个节点的链表。
+在本题中，为了方便输入输出，我们使用数组来模拟链表的输入，并将反转后的链表转换为数组输出。在实际应用中，链表通常是直接给定的。
 
 ]]></content>
       <categories>
@@ -259,6 +278,48 @@
 迭代方法的核心思想是使用一个指针 curr 来构建新的链表。我们同时遍历两个链表，每次选择值较小的节点加入新链表，直到遍历完其中一个链表。然后将另一个链表的剩余部分直接接到新链表的末尾。
 递归方法的核心思想是：如果其中一个链表为空，直接返回另一个链表；否则，选择值较小的节点作为当前节点，然后递归地合并该节点的下一个节点与另一个链表。
 在本题中，为了方便输入输出，我们使用数组来模拟链表的输入，并将合并后的链表转换为数组输出。在实际应用中，链表通常是直接给定的。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>冒泡排序</title>
+    <url>/2025/08/29/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢”浮”到数列的顶端。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 1000-1000 ≤ 数组元素 ≤ 1000
+输入样例：
+53 1 4 2 5
+
+输出样例：
+1 2 3 4 5
+
+注意事项
+
+冒泡排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。
+冒泡排序是稳定的排序算法。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        // 冒泡排序    for (int i = 0; i &lt; n - 1; i++)    &#123;        for (int j = 0; j &lt; n - 1 - i; j++)        &#123;            if (a[j] &gt; a[j + 1])            &#123;                // 交换a[j]和a[j+1]                int temp = a[j];                a[j] = a[j + 1];                a[j + 1] = temp;            &#125;        &#125;    &#125;        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(n²)，其中 n 为数组的长度。
+空间复杂度：O(1)。
+
+代码解释
+
+我们使用两层循环来实现冒泡排序。外层循环控制排序的轮数，内层循环控制每轮比较的次数。
+在每一轮中，我们比较相邻的两个元素，如果它们的顺序错误（前面的元素大于后面的元素），就交换它们的位置。
+每轮结束后，最大的元素会被”冒泡”到数组的末尾。
+重复上述过程，直到整个数组排序完成。
 
 ]]></content>
       <categories>
@@ -367,84 +428,6 @@ false
       </tags>
   </entry>
   <entry>
-    <title>基数排序</title>
-    <url>/2025/08/29/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[题目描述基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法（通常是计数排序）。
-
-输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个非负整数，表示待排序的数组。
-输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
-数据范围1 ≤ n ≤ 100000 ≤ 数组元素 ≤ 1000000
-输入样例：
-8170 45 75 90 802 24 2 66
-
-输出样例：
-2 24 45 66 75 90 170 802
-
-注意事项
-
-基数排序的时间复杂度为 O(d*(n+k))，其中 d 是最大数的位数，n 是数组的长度，k 是基数（这里为10）。
-基数排序的空间复杂度为 O(n+k)。
-基数排序是稳定的排序算法。
-基数排序特别适合于整数排序，尤其是当数据范围较大但位数较少时。
-
-代码实现
-#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;algorithm&gt;using namespace std;// 获取x的第d位数字（从0开始计数）int getDigit(int x, int d)&#123;    int divisor = 1;    for (int i = 0; i &lt; d; i++)    &#123;        divisor *= 10;    &#125;    return (x / divisor) % 10;&#125;// 基数排序函数（从低位到高位排序）void radixSort(int a[], int n)&#123;    // 找出数组中的最大值    int max_value = a[0];    for (int i = 1; i &lt; n; i++)    &#123;        if (a[i] &gt; max_value)        &#123;            max_value = a[i];        &#125;    &#125;        // 计算最大值的位数    int max_digits = 0;    while (max_value &gt; 0)    &#123;        max_digits++;        max_value /= 10;    &#125;        // 创建10个桶（对应0-9这10个数字）    vector&lt;vector&lt;int&gt;&gt; buckets(10);        // 从低位到高位进行排序    for (int d = 0; d &lt; max_digits; d++)    &#123;        // 将元素分配到对应的桶中        for (int i = 0; i &lt; n; i++)        &#123;            int digit = getDigit(a[i], d);            buckets[digit].push_back(a[i]);        &#125;                // 将桶中的元素合并回原数组        int index = 0;        for (int i = 0; i &lt; 10; i++)        &#123;            for (int j = 0; j &lt; buckets[i].size(); j++)            &#123;                a[index++] = buckets[i][j];            &#125;            buckets[i].clear(); // 清空桶，为下一轮排序做准备        &#125;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        radixSort(a, n); // 对整个数组进行基数排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
-
-时间复杂度
-
-时间复杂度：O(d*(n+k))，其中 d 是最大数的位数，n 是数组的长度，k 是基数（这里为10）。
-空间复杂度：O(n+k)。
-
-代码解释
-
-基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法。
-在这个实现中，我们从低位到高位进行排序，每一位的排序都使用计数排序的思想（通过桶来实现）。
-首先，我们找出数组中的最大值，并计算其位数。
-然后，我们从最低位开始，对每一位进行排序：
-根据当前位的数字，将元素分配到对应的桶中。
-将桶中的元素按照顺序合并回原数组。
-
-
-重复上述过程，直到所有位都排序完成。
-
-]]></content>
-      <categories>
-        <category>算法基础</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>字符串—C++</title>
-    <url>/2025/10/01/%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%94C/</url>
-    <content><![CDATA[string 常见函数（1）string的查找和截取
-
-■ find   (子串substr): 查找子字符串第一次出现的下标，没有返回string::npos  ( 注意判断其为-1);■ find(substr,x):  在字符串的下标x 之后，查找子串substr;■ substr  (开始位置i,  子串长度len):      截取子字符串，当len&gt; 字符串长度的时候，只取剩余的；■ substr    (开始位置i):      截取子字符串，从下标为i  开始截取到最后；（2）string 的删除、插入和替换 相 关 函 数■  erase(开始下标i, 删除长度len): 删除字符串第i 个下标开始的len个字符；■  erase ( 开始下标i):  删 除 字 符 串 第i 个下标开始往后的所有字符；■  insert (插入下标，插入字符串s):  在 字 符 串 下 标 为i 的位置插入 一 个字符串s;■ replace(i,len,str): 从下标为i 开始，替换len个字符为str（3）字符类型判断&#x2F;转换，数组&#x2F;string排序相关函数■   字符类型判断函数：(非string 函数) √  isalpha©:  判 断c 是否为字母√  islower©:  判断是否为小写 √  isupper©:   判断是否为大写√  isdigit©:    判断是否为数字   说 明 ：返回非0表示真，返回0表示假；■  字符类型转换函数：(非string 函数) √  tolower©:   字符转小写√  toupper©:   字符转大写 说明：  返 回i n t   ;■  排序和倒序函数(非string 函 数 )√  sort  (起始地址，结束地址+1): 数组升序排序 √ reverse  (起始地址，结束地址+1): 数组逆序■  获取头尾指针√  s.begin():       获取字符串s  的头位置(指针)√  s.end():           获取字符串s  的尾位置(最后一个字符后面的位置)(指针)注意：数组的本质是数组中下标为0的元素的地址；(首元素的地址)
-例题1.打印小写字母表（基础）
-#include &lt;iostream&gt;using namespace std;int main()&#123;    for (char c = &#x27;a&#x27;; c &lt;= &#x27;z&#x27;; c++)    &#123;        cout &lt;&lt; c &lt;&lt; endl;    &#125;    return 0;&#125;
-2.判断是否构成回文（基础）方法一：
-#include &lt;iostream&gt;using namespace std;int main()&#123;    string s;    cin &gt;&gt; s;    int n = s.size();    for (int i = 0; i &lt; n / 2; i++)    &#123;        if (s[i] != s[n - 1 - i])        &#123;            cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;            return 0;        &#125;    &#125;    cout &lt;&lt; &quot;Yes&quot; &lt;&lt; endl;    return 0;&#125;
-方法二：
-#include &lt;bits/stdc++.h&gt;using namespace std;bool huiwen(string s1) &#123;    string s2 = s1;    reverse(s2.begin(), s2.end());    return s1 == s2; &#125;int main() &#123;    string s, s1;    cin &gt;&gt; s;    for (int i = 0; i &lt; s.size(); i++) &#123;        if (s[i] != &#x27;.&#x27;)            s1 += s[i];    &#125;        if (huiwen(s1))        cout &lt;&lt; &quot;TRUE&quot;;    else        cout &lt;&lt; &quot;FALSE&quot;;    return 0;&#125;
-3.字符串加密（入门）描述在情报传递过程中，为了防止情报被截获，往往需要对情报用一定的方式加密，简单的加密算法虽然不足以完全避免情报被破译，但仍然能防止情报被轻易的识别。
-我们给出一种最简的的加密方法，对给定的一个字符串，把其中从a−y ，A−Y 的字母用其后继字母替代，把 z 和 Z 用 a 和 A 替代，其他非字母字符不变，则可得到一个简单的加密字符串。输入描述输入一行，包含一个字符串，长度不超过 80 个字符。输出描述输出每行字符串的加密字符串。用例输入1Hello! How are you!用例输出1Ifmmp! Ipx bsf zpv!参考代码
-#include &lt;iostream&gt;using namespace std;int main()&#123;    string s;    getline(cin, s);    for (int i = 0; i &lt; s.size(); i++)    &#123;        if (isalpha(s[i]))        &#123;            if (s[i] == &#x27;z&#x27;)                s[i] = &#x27;a&#x27;;            else if (s[i] == &#x27;Z&#x27;)                s[i] = &#x27;A&#x27;;            else                s[i]++;        &#125;    &#125;    cout &lt;&lt; s &lt;&lt; endl;    return 0;&#125;
-4.求子串的位置（入门）描述请问在一个父字符串 s 中是否存在子字符串 t 。如果存在，则输出子字符串 t 在父字符串中所有的起始位置，如果不存在，则输出 -1 。比如：假设父字符串 s&#x3D;Go Abc good goole，子字符串 t&#x3D;go ，那么输出位置：813说明请分别用 find 及 substr 两种方法求解。输入描述第一行输入父字符串的值（字符串长度不超过 100）。第二行输入子字符串的值（子字符串长度不超过 100 ）。输出描述输出子字符串在父字符串中所有的位置，如果父字符串中不存在子字符串，请输出 -1 。用例输入1Go Abc good goole!go用例输出1813用例输入2Go Abc good goole!Good用例输出2-1参考代码方法一：（find）
-#include &lt;iostream&gt;using namespace std;int main()&#123;    string s, t;    getline(cin, s);    getline(cin, t);    int pos = s.find(t);    while (pos != string::npos)    &#123;        cout &lt;&lt; pos &lt;&lt; endl;        pos = s.find(t, pos + 1);    &#125;    if (pos == string::npos)        cout &lt;&lt; -1 &lt;&lt; endl;    return 0;&#125;
-方法二：（substr）
-#include &lt;iostream&gt;using namespace std;int main()&#123;    string s, t;    getline(cin, s);    getline(cin, t);    int n = s.size(), m = t.size();    for (int i = 0; i &lt;= n - m; i++)    &#123;        if (s.substr(i, m) == t)            cout &lt;&lt; i &lt;&lt; endl;    &#125;    if (n &lt; m)        cout &lt;&lt; -1 &lt;&lt; endl;    return 0;&#125;
-5.计算表达式（提升）描述表达式的形式如：3+5∗6−4 其中, 运算数为一位整数,运算符为+、−、∗三种，且运算符没有优先级的区分，一律自左向右计算。 如上例的计算过程为：3+5∗6−4&#x3D;8∗6−4&#x3D;48−4&#x3D;44输入描述一行，即表达式字符串。（长度小于 100）输出描述一个整数，即表达式的计算结果（结果在−20000至20000之间）用例输入13+5*6-4用例输出144参考代码
-#include &lt;iostream&gt;using namespace std;int main()&#123;    string s;    cin &gt;&gt; s;    int n = s.size();    int res = s[0] - &#x27;0&#x27;;    for (int i = 1; i &lt; n; i += 2)    &#123;        if (s[i] == &#x27;+&#x27;)            res += s[i + 1] - &#x27;0&#x27;;        else if (s[i] == &#x27;-&#x27;)            res -= s[i + 1] - &#x27;0&#x27;;        else if (s[i] == &#x27;*&#x27;)            res *= s[i + 1] - &#x27;0&#x27;;    &#125;    cout &lt;&lt; res &lt;&lt; endl;    return 0;&#125;
-]]></content>
-      <categories>
-        <category>算法基础</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>希尔排序</title>
     <url>/2025/08/29/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[题目描述希尔排序是插入排序的一种更高效的改进版本，也称为缩小增量排序。它通过比较相距一定间隔的元素来进行排序。逐步缩小这个间隔直到为1，最后进行一次普通的插入排序。希尔排序的主要思想是先将整个待排序序列分割成若干个子序列分别进行直接插入排序，待整个序列中的元素”基本有序”时，再对全体元素进行一次直接插入排序。
@@ -491,40 +474,74 @@ false
       </tags>
   </entry>
   <entry>
-    <title>快速排序</title>
-    <url>/2025/08/29/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[题目描述快速排序是一种高效的排序算法，它采用了分治（Divide and Conquer）的思想。基本思想是通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。
+    <title>字符串—C++</title>
+    <url>/2025/10/01/%E5%AD%97%E7%AC%A6%E4%B8%B2%E2%80%94C/</url>
+    <content><![CDATA[string 常见函数（1）string的查找和截取
 
-输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+■ find   (子串substr): 查找子字符串第一次出现的下标，没有返回string::npos  ( 注意判断其为-1);■ find(substr,x):  在字符串的下标x 之后，查找子串substr;■ substr  (开始位置i,  子串长度len):      截取子字符串，当len&gt; 字符串长度的时候，只取剩余的；■ substr    (开始位置i):      截取子字符串，从下标为i  开始截取到最后；（2）string 的删除、插入和替换 相 关 函 数■  erase(开始下标i, 删除长度len): 删除字符串第i 个下标开始的len个字符；■  erase ( 开始下标i):  删 除 字 符 串 第i 个下标开始往后的所有字符；■  insert (插入下标，插入字符串s):  在 字 符 串 下 标 为i 的位置插入 一 个字符串s;■ replace(i,len,str): 从下标为i 开始，替换len个字符为str（3）字符类型判断&#x2F;转换，数组&#x2F;string排序相关函数■   字符类型判断函数：(非string 函数) √  isalpha©:  判 断c 是否为字母√  islower©:  判断是否为小写 √  isupper©:   判断是否为大写√  isdigit©:    判断是否为数字   说 明 ：返回非0表示真，返回0表示假；■  字符类型转换函数：(非string 函数) √  tolower©:   字符转小写√  toupper©:   字符转大写 说明：  返 回i n t   ;■  排序和倒序函数(非string 函 数 )√  sort  (起始地址，结束地址+1): 数组升序排序 √ reverse  (起始地址，结束地址+1): 数组逆序■  获取头尾指针√  s.begin():       获取字符串s  的头位置(指针)√  s.end():           获取字符串s  的尾位置(最后一个字符后面的位置)(指针)注意：数组的本质是数组中下标为0的元素的地址；(首元素的地址)
+例题1.打印小写字母表（基础）
+#include &lt;iostream&gt;using namespace std;int main()&#123;    for (char c = &#x27;a&#x27;; c &lt;= &#x27;z&#x27;; c++)    &#123;        cout &lt;&lt; c &lt;&lt; endl;    &#125;    return 0;&#125;
+2.判断是否构成回文（基础）方法一：
+#include &lt;iostream&gt;using namespace std;int main()&#123;    string s;    cin &gt;&gt; s;    int n = s.size();    for (int i = 0; i &lt; n / 2; i++)    &#123;        if (s[i] != s[n - 1 - i])        &#123;            cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;            return 0;        &#125;    &#125;    cout &lt;&lt; &quot;Yes&quot; &lt;&lt; endl;    return 0;&#125;
+方法二：
+#include &lt;bits/stdc++.h&gt;using namespace std;bool huiwen(string s1) &#123;    string s2 = s1;    reverse(s2.begin(), s2.end());    return s1 == s2; &#125;int main() &#123;    string s, s1;    cin &gt;&gt; s;    for (int i = 0; i &lt; s.size(); i++) &#123;        if (s[i] != &#x27;.&#x27;)            s1 += s[i];    &#125;        if (huiwen(s1))        cout &lt;&lt; &quot;TRUE&quot;;    else        cout &lt;&lt; &quot;FALSE&quot;;    return 0;&#125;
+3.字符串加密（入门）描述在情报传递过程中，为了防止情报被截获，往往需要对情报用一定的方式加密，简单的加密算法虽然不足以完全避免情报被破译，但仍然能防止情报被轻易的识别。
+我们给出一种最简的的加密方法，对给定的一个字符串，把其中从a−y ，A−Y 的字母用其后继字母替代，把 z 和 Z 用 a 和 A 替代，其他非字母字符不变，则可得到一个简单的加密字符串。输入描述输入一行，包含一个字符串，长度不超过 80 个字符。输出描述输出每行字符串的加密字符串。用例输入1Hello! How are you!用例输出1Ifmmp! Ipx bsf zpv!参考代码
+#include &lt;iostream&gt;using namespace std;int main()&#123;    string s;    getline(cin, s);    for (int i = 0; i &lt; s.size(); i++)    &#123;        if (isalpha(s[i]))        &#123;            if (s[i] == &#x27;z&#x27;)                s[i] = &#x27;a&#x27;;            else if (s[i] == &#x27;Z&#x27;)                s[i] = &#x27;A&#x27;;            else                s[i]++;        &#125;    &#125;    cout &lt;&lt; s &lt;&lt; endl;    return 0;&#125;
+4.求子串的位置（入门）描述请问在一个父字符串 s 中是否存在子字符串 t 。如果存在，则输出子字符串 t 在父字符串中所有的起始位置，如果不存在，则输出 -1 。比如：假设父字符串 s&#x3D;Go Abc good goole，子字符串 t&#x3D;go ，那么输出位置：813说明请分别用 find 及 substr 两种方法求解。输入描述第一行输入父字符串的值（字符串长度不超过 100）。第二行输入子字符串的值（子字符串长度不超过 100 ）。输出描述输出子字符串在父字符串中所有的位置，如果父字符串中不存在子字符串，请输出 -1 。用例输入1Go Abc good goole!go用例输出1813用例输入2Go Abc good goole!Good用例输出2-1参考代码方法一：（find）
+#include &lt;iostream&gt;using namespace std;int main()&#123;    string s, t;    getline(cin, s);    getline(cin, t);    int pos = s.find(t);    while (pos != string::npos)    &#123;        cout &lt;&lt; pos &lt;&lt; endl;        pos = s.find(t, pos + 1);    &#125;    if (pos == string::npos)        cout &lt;&lt; -1 &lt;&lt; endl;    return 0;&#125;
+方法二：（substr）
+#include &lt;iostream&gt;using namespace std;int main()&#123;    string s, t;    getline(cin, s);    getline(cin, t);    int n = s.size(), m = t.size();    for (int i = 0; i &lt;= n - m; i++)    &#123;        if (s.substr(i, m) == t)            cout &lt;&lt; i &lt;&lt; endl;    &#125;    if (n &lt; m)        cout &lt;&lt; -1 &lt;&lt; endl;    return 0;&#125;
+5.计算表达式（提升）描述表达式的形式如：3+5∗6−4 其中, 运算数为一位整数,运算符为+、−、∗三种，且运算符没有优先级的区分，一律自左向右计算。 如上例的计算过程为：3+5∗6−4&#x3D;8∗6−4&#x3D;48−4&#x3D;44输入描述一行，即表达式字符串。（长度小于 100）输出描述一个整数，即表达式的计算结果（结果在−20000至20000之间）用例输入13+5*6-4用例输出144参考代码
+#include &lt;iostream&gt;using namespace std;int main()&#123;    string s;    cin &gt;&gt; s;    int n = s.size();    int res = s[0] - &#x27;0&#x27;;    for (int i = 1; i &lt; n; i += 2)    &#123;        if (s[i] == &#x27;+&#x27;)            res += s[i + 1] - &#x27;0&#x27;;        else if (s[i] == &#x27;-&#x27;)            res -= s[i + 1] - &#x27;0&#x27;;        else if (s[i] == &#x27;*&#x27;)            res *= s[i + 1] - &#x27;0&#x27;;    &#125;    cout &lt;&lt; res &lt;&lt; endl;    return 0;&#125;
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基数排序</title>
+    <url>/2025/08/29/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法（通常是计数排序）。
+
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个非负整数，表示待排序的数组。
 输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
-数据范围1 ≤ n ≤ 10000-10000 ≤ 数组元素 ≤ 10000
+数据范围1 ≤ n ≤ 100000 ≤ 数组元素 ≤ 1000000
 输入样例：
-83 1 4 1 5 9 2 6
+8170 45 75 90 802 24 2 66
 
 输出样例：
-1 1 2 3 4 5 6 9
+2 24 45 66 75 90 170 802
 
 注意事项
 
-快速排序的平均时间复杂度为 O(nlogn)，最坏时间复杂度为 O(n²)，空间复杂度为 O(logn)。
-快速排序是不稳定的排序算法。
-在大多数情况下，快速排序是实际应用中性能最好的排序算法之一。
+基数排序的时间复杂度为 O(d*(n+k))，其中 d 是最大数的位数，n 是数组的长度，k 是基数（这里为10）。
+基数排序的空间复杂度为 O(n+k)。
+基数排序是稳定的排序算法。
+基数排序特别适合于整数排序，尤其是当数据范围较大但位数较少时。
 
 代码实现
-#include &lt;iostream&gt;using namespace std;// 交换两个元素void swap(int &amp;a, int &amp;b)&#123;    int temp = a;    a = b;    b = temp;&#125;// 分区函数，返回枢轴元素的最终位置int partition(int a[], int low, int high)&#123;    int pivot = a[high]; // 选择最右边的元素作为枢轴    int i = low - 1; // i指向小于枢轴元素的最后一个位置        for (int j = low; j &lt; high; j++)    &#123;        if (a[j] &lt;= pivot)        &#123;            i++;            swap(a[i], a[j]);        &#125;    &#125;    swap(a[i + 1], a[high]); // 将枢轴元素放到正确的位置    return i + 1; // 返回枢轴元素的最终位置&#125;// 快速排序函数void quickSort(int a[], int low, int high)&#123;    if (low &lt; high)    &#123;        int pivot_index = partition(a, low, high); // 获取枢轴元素的最终位置        quickSort(a, low, pivot_index - 1); // 递归排序枢轴元素左边的子数组        quickSort(a, pivot_index + 1, high); // 递归排序枢轴元素右边的子数组    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        quickSort(a, 0, n - 1); // 对整个数组进行快速排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;algorithm&gt;using namespace std;// 获取x的第d位数字（从0开始计数）int getDigit(int x, int d)&#123;    int divisor = 1;    for (int i = 0; i &lt; d; i++)    &#123;        divisor *= 10;    &#125;    return (x / divisor) % 10;&#125;// 基数排序函数（从低位到高位排序）void radixSort(int a[], int n)&#123;    // 找出数组中的最大值    int max_value = a[0];    for (int i = 1; i &lt; n; i++)    &#123;        if (a[i] &gt; max_value)        &#123;            max_value = a[i];        &#125;    &#125;        // 计算最大值的位数    int max_digits = 0;    while (max_value &gt; 0)    &#123;        max_digits++;        max_value /= 10;    &#125;        // 创建10个桶（对应0-9这10个数字）    vector&lt;vector&lt;int&gt;&gt; buckets(10);        // 从低位到高位进行排序    for (int d = 0; d &lt; max_digits; d++)    &#123;        // 将元素分配到对应的桶中        for (int i = 0; i &lt; n; i++)        &#123;            int digit = getDigit(a[i], d);            buckets[digit].push_back(a[i]);        &#125;                // 将桶中的元素合并回原数组        int index = 0;        for (int i = 0; i &lt; 10; i++)        &#123;            for (int j = 0; j &lt; buckets[i].size(); j++)            &#123;                a[index++] = buckets[i][j];            &#125;            buckets[i].clear(); // 清空桶，为下一轮排序做准备        &#125;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];        for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        radixSort(a, n); // 对整个数组进行基数排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
 
 时间复杂度
 
-平均时间复杂度：O(nlogn)，其中 n 为数组的长度。
-最坏时间复杂度：O(n²)（当输入数组已经排序或接近排序时）。
-空间复杂度：O(logn)（由递归调用栈占用的空间）。
+时间复杂度：O(d*(n+k))，其中 d 是最大数的位数，n 是数组的长度，k 是基数（这里为10）。
+空间复杂度：O(n+k)。
 
 代码解释
 
-快速排序的核心是分区（partition）操作，我们选择一个元素作为枢轴（pivot），然后将数组重新排列，使得所有小于枢轴的元素都在枢轴的左边，所有大于枢轴的元素都在枢轴的右边。
-然后，我们递归地对枢轴左右两边的子数组应用相同的操作。
-在这个实现中，我们选择最右边的元素作为枢轴，使用双指针技术来完成分区操作。
-递归的终止条件是子数组的长度小于或等于1（即low &gt;&#x3D; high）。
+基数排序的核心思想是从低位到高位（或从高位到低位）对数据进行排序，每一位的排序都使用稳定的排序算法。
+在这个实现中，我们从低位到高位进行排序，每一位的排序都使用计数排序的思想（通过桶来实现）。
+首先，我们找出数组中的最大值，并计算其位数。
+然后，我们从最低位开始，对每一位进行排序：
+根据当前位的数字，将元素分配到对应的桶中。
+将桶中的元素按照顺序合并回原数组。
+
+
+重复上述过程，直到所有位都排序完成。
 
 ]]></content>
       <categories>
@@ -580,102 +597,40 @@ false
       </tags>
   </entry>
   <entry>
-    <title>反转链表</title>
-    <url>/2025/08/29/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
-    <content><![CDATA[题目描述给你单链表的头节点 head，请你反转链表，并返回反转后的链表的头节点。
-
-输入格式输入共 2 行：
-
-第一行包含一个整数 n，表示链表的长度。
-第二行包含 n 个整数，表示链表的节点值，按链表顺序给出。
-
-输出格式输出共 1 行，包含 n 个整数，表示反转后的链表的节点值，按链表顺序给出。
-数据范围链表中节点的数目在范围 [0, 5000] 内-5000 ≤ Node.val ≤ 5000
-输入样例1：
-51 2 3 4 5
-
-输出样例1：
-5 4 3 2 1
-
-输入样例2：
-21 2
-
-输出样例2：
-2 1
-
-输入样例3：
-11
-
-输出样例3：
-1
-
-注意事项
-
-可以使用迭代或递归的方法来反转链表。
-迭代方法的时间复杂度为O(n)，空间复杂度为O(1)。
-递归方法的时间复杂度为O(n)，空间复杂度为O(n)，因为递归调用会使用栈空间。
-在本题中，为了方便输入输出，我们将使用数组来模拟链表的输入，并将反转后的链表转换为数组输出。
-
-代码实现
-#include &lt;iostream&gt;#include &lt;vector&gt;using namespace std;// 定义链表节点结构struct ListNode &#123;    int val;    ListNode *next;    ListNode() : val(0), next(nullptr) &#123;&#125;    ListNode(int x) : val(x), next(nullptr) &#123;&#125;    ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;&#125;;// 方法一：迭代反转链表ListNode* reverseListIterative(ListNode* head)&#123;    ListNode* prev = nullptr;    ListNode* curr = head;        while (curr != nullptr) &#123;        ListNode* nextTemp = curr-&gt;next; // 保存下一个节点        curr-&gt;next = prev;              // 反转当前节点的指针        prev = curr;                    // 移动prev指针        curr = nextTemp;                // 移动curr指针    &#125;        return prev; // prev现在是新的头节点&#125;// 方法二：递归反转链表ListNode* reverseListRecursive(ListNode* head)&#123;    // 基本情况：空链表或只有一个节点    if (head == nullptr || head-&gt;next == nullptr) &#123;        return head;    &#125;        // 递归反转剩余部分    ListNode* newHead = reverseListRecursive(head-&gt;next);        // 反转当前节点和下一个节点的连接    head-&gt;next-&gt;next = head;    head-&gt;next = nullptr;        return newHead;&#125;// 从数组创建链表ListNode* createList(vector&lt;int&gt;&amp; nums)&#123;    if (nums.empty()) &#123;        return nullptr;    &#125;        ListNode* head = new ListNode(nums[0]);    ListNode* current = head;        for (int i = 1; i &lt; nums.size(); i++) &#123;        current-&gt;next = new ListNode(nums[i]);        current = current-&gt;next;    &#125;        return head;&#125;// 从链表创建数组（用于输出）vector&lt;int&gt; listToArray(ListNode* head)&#123;    vector&lt;int&gt; result;    ListNode* current = head;        while (current != nullptr) &#123;        result.push_back(current-&gt;val);        current = current-&gt;next;    &#125;        return result;&#125;// 释放链表内存void deleteList(ListNode* head)&#123;    ListNode* current = head;    while (current != nullptr) &#123;        ListNode* next = current-&gt;next;        delete current;        current = next;    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;        vector&lt;int&gt; nums(n);    for (int i = 0; i &lt; n; i++) &#123;        cin &gt;&gt; nums[i];    &#125;        // 创建链表    ListNode* head = createList(nums);        // 使用迭代方法反转链表    ListNode* reversedHead = reverseListIterative(head);        // 如果要使用递归方法，可以取消下面这行的注释，并注释掉上面这行    // ListNode* reversedHead = reverseListRecursive(head);        // 将反转后的链表转换为数组并输出    vector&lt;int&gt; result = listToArray(reversedHead);    for (int i = 0; i &lt; result.size(); i++) &#123;        cout &lt;&lt; result[i];        if (i != result.size() - 1) &#123;            cout &lt;&lt; &quot; &quot;;        &#125;    &#125;    cout &lt;&lt; endl;        // 释放内存    deleteList(reversedHead);        return 0;&#125;
-
-时间复杂度
-
-迭代方法时间复杂度：O(n)，其中 n 是链表的长度。我们只需要遍历链表一次。
-递归方法时间复杂度：O(n)，其中 n 是链表的长度。递归调用的次数等于链表的长度。
-空间复杂度：O(1)（迭代方法）或 O(n)（递归方法，由递归调用栈占用的空间）。
-
-代码解释
-
-反转链表是链表操作中的一个基础问题，可以用迭代或递归的方法解决。
-迭代方法的核心思想是维护三个指针：prev（前一个节点）、curr（当前节点）和nextTemp（下一个节点）。在遍历链表的过程中，我们将当前节点的next指针指向前一个节点，然后移动这三个指针，直到遍历完整个链表。
-递归方法的核心思想是先递归反转链表的剩余部分，然后反转当前节点和下一个节点的连接。递归的基本情况是空链表或只有一个节点的链表。
-在本题中，为了方便输入输出，我们使用数组来模拟链表的输入，并将反转后的链表转换为数组输出。在实际应用中，链表通常是直接给定的。
-
-]]></content>
-      <categories>
-        <category>算法基础</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>插入排序</title>
-    <url>/2025/08/29/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[题目描述插入排序是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序）。
+    <title>快速排序</title>
+    <url>/2025/08/29/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述快速排序是一种高效的排序算法，它采用了分治（Divide and Conquer）的思想。基本思想是通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。
 
 输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
 输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
-数据范围1 ≤ n ≤ 1000-1000 ≤ 数组元素 ≤ 1000
+数据范围1 ≤ n ≤ 10000-10000 ≤ 数组元素 ≤ 10000
 输入样例：
-79 8 7 6 5 4 3
+83 1 4 1 5 9 2 6
 
 输出样例：
-3 4 5 6 7 8 9
+1 1 2 3 4 5 6 9
 
 注意事项
 
-插入排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。
-插入排序是稳定的排序算法。
-插入排序特别适合于小规模数据或基本有序的数据。
+快速排序的平均时间复杂度为 O(nlogn)，最坏时间复杂度为 O(n²)，空间复杂度为 O(logn)。
+快速排序是不稳定的排序算法。
+在大多数情况下，快速排序是实际应用中性能最好的排序算法之一。
 
 代码实现
-#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        // 插入排序    for (int i = 1; i &lt; n; i++)    &#123;        int key = a[i]; // 保存当前要插入的元素        int j = i - 1;        // 将比key大的元素向后移动        while (j &gt;= 0 &amp;&amp; a[j] &gt; key)        &#123;            a[j + 1] = a[j];            j--;        &#125;        a[j + 1] = key; // 将key插入到正确的位置    &#125;        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
+#include &lt;iostream&gt;using namespace std;// 交换两个元素void swap(int &amp;a, int &amp;b)&#123;    int temp = a;    a = b;    b = temp;&#125;// 分区函数，返回枢轴元素的最终位置int partition(int a[], int low, int high)&#123;    int pivot = a[high]; // 选择最右边的元素作为枢轴    int i = low - 1; // i指向小于枢轴元素的最后一个位置        for (int j = low; j &lt; high; j++)    &#123;        if (a[j] &lt;= pivot)        &#123;            i++;            swap(a[i], a[j]);        &#125;    &#125;    swap(a[i + 1], a[high]); // 将枢轴元素放到正确的位置    return i + 1; // 返回枢轴元素的最终位置&#125;// 快速排序函数void quickSort(int a[], int low, int high)&#123;    if (low &lt; high)    &#123;        int pivot_index = partition(a, low, high); // 获取枢轴元素的最终位置        quickSort(a, low, pivot_index - 1); // 递归排序枢轴元素左边的子数组        quickSort(a, pivot_index + 1, high); // 递归排序枢轴元素右边的子数组    &#125;&#125;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        quickSort(a, 0, n - 1); // 对整个数组进行快速排序        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
 
 时间复杂度
 
-时间复杂度：O(n²)，其中 n 为数组的长度。
-空间复杂度：O(1)。
+平均时间复杂度：O(nlogn)，其中 n 为数组的长度。
+最坏时间复杂度：O(n²)（当输入数组已经排序或接近排序时）。
+空间复杂度：O(logn)（由递归调用栈占用的空间）。
 
 代码解释
 
-我们从第二个元素开始，将其视为要插入的元素。
-对于每个要插入的元素，我们将其与已排序部分从后向前比较。
-如果已排序部分的元素大于当前要插入的元素，则将其向后移动一位。
-重复上述过程，直到找到一个小于或等于当前要插入元素的位置，或者到达数组的开头。
-将当前要插入的元素放到找到的位置上。
-重复上述过程，直到所有元素都被插入到正确的位置。
+快速排序的核心是分区（partition）操作，我们选择一个元素作为枢轴（pivot），然后将数组重新排列，使得所有小于枢轴的元素都在枢轴的左边，所有大于枢轴的元素都在枢轴的右边。
+然后，我们递归地对枢轴左右两边的子数组应用相同的操作。
+在这个实现中，我们选择最右边的元素作为枢轴，使用双指针技术来完成分区操作。
+递归的终止条件是子数组的长度小于或等于1（即low &gt;&#x3D; high）。
 
 ]]></content>
       <categories>
@@ -741,37 +696,41 @@ false
       </tags>
   </entry>
   <entry>
-    <title>最大公约数和最小公倍数</title>
-    <url>/2025/08/29/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E5%92%8C%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0/</url>
-    <content><![CDATA[题目描述最大公约数（GCD，Greatest Common Divisor）指两个或多个整数共有约数中最大的一个。最小公倍数（LCM，Least Common Multiple）指两个或多个整数公有的倍数中最小的一个。本问题要求计算两个正整数的最大公约数和最小公倍数。
+    <title>插入排序</title>
+    <url>/2025/08/29/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[题目描述插入排序是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序）。
 
-输入格式输入共 1 行，包含两个正整数 a 和 b（用空格分隔）。
-输出格式输出共 2 行，第一行是 a 和 b 的最大公约数，第二行是 a 和 b 的最小公倍数。
-数据范围1 ≤ a, b ≤ 1000000
+输入格式输入共 2 行，第一行是一个整数 n，表示数组的长度。第二行包含 n 个整数，表示待排序的数组。
+输出格式输出共 1 行，包含 n 个整数，表示排序后的数组（升序排列）。
+数据范围1 ≤ n ≤ 1000-1000 ≤ 数组元素 ≤ 1000
 输入样例：
-48 36
+79 8 7 6 5 4 3
 
 输出样例：
-12144
+3 4 5 6 7 8 9
 
 注意事项
 
-计算最大公约数常用的算法有欧几里得算法（辗转相除法）和更相减损术。
-最小公倍数可以通过公式 LCM(a, b) &#x3D; a * b &#x2F; GCD(a, b) 计算，但需要注意乘法溢出的问题。
+插入排序的时间复杂度为 O(n²)，空间复杂度为 O(1)。
+插入排序是稳定的排序算法。
+插入排序特别适合于小规模数据或基本有序的数据。
 
 代码实现
-#include &lt;iostream&gt;using namespace std;// 计算最大公约数（欧几里得算法/辗转相除法）long long gcd(long long a, long long b)&#123;    while (b != 0)    &#123;        long long temp = b;        b = a % b;        a = temp;    &#125;    return a;&#125;// 计算最小公倍数long long lcm(long long a, long long b)&#123;    // 先计算最大公约数，然后使用公式 LCM(a, b) = a * b / GCD(a, b)    // 为了避免乘法溢出，先进行除法运算    return a / gcd(a, b) * b;&#125;int main()&#123;    long long a, b;    cin &gt;&gt; a &gt;&gt; b;        long long greatest_common_divisor = gcd(a, b);    long long least_common_multiple = lcm(a, b);        cout &lt;&lt; greatest_common_divisor &lt;&lt; endl;    cout &lt;&lt; least_common_multiple &lt;&lt; endl;        return 0;&#125;
+#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int a[n];    for (int i = 0; i &lt; n; i++)    &#123;        cin &gt;&gt; a[i];    &#125;        // 插入排序    for (int i = 1; i &lt; n; i++)    &#123;        int key = a[i]; // 保存当前要插入的元素        int j = i - 1;        // 将比key大的元素向后移动        while (j &gt;= 0 &amp;&amp; a[j] &gt; key)        &#123;            a[j + 1] = a[j];            j--;        &#125;        a[j + 1] = key; // 将key插入到正确的位置    &#125;        // 输出排序后的数组    for (int i = 0; i &lt; n; i++)    &#123;        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;    &#125;    cout &lt;&lt; endl;        return 0;&#125;
 
 时间复杂度
 
-时间复杂度：O(log min(a, b))，其中 a 和 b 是输入的两个正整数。
+时间复杂度：O(n²)，其中 n 为数组的长度。
 空间复杂度：O(1)。
 
 代码解释
 
-计算最大公约数的欧几里得算法（辗转相除法）的核心思想是：如果 a 和 b 是两个正整数，且 a ≥ b，那么 gcd(a, b) &#x3D; gcd(b, a % b)。当 b 变为 0 时，a 就是最大公约数。
-计算最小公倍数的公式是 LCM(a, b) &#x3D; a * b &#x2F; GCD(a, b)。为了避免乘法溢出，我们先计算 a &#x2F; gcd(a, b)，然后再乘以 b。
-在代码中，我们使用 long long 类型来存储中间结果，以避免在处理较大的输入时发生溢出。
+我们从第二个元素开始，将其视为要插入的元素。
+对于每个要插入的元素，我们将其与已排序部分从后向前比较。
+如果已排序部分的元素大于当前要插入的元素，则将其向后移动一位。
+重复上述过程，直到找到一个小于或等于当前要插入元素的位置，或者到达数组的开头。
+将当前要插入的元素放到找到的位置上。
+重复上述过程，直到所有元素都被插入到正确的位置。
 
 ]]></content>
       <categories>
@@ -782,65 +741,45 @@ false
       </tags>
   </entry>
   <entry>
-    <title>有效的括号</title>
-    <url>/2025/08/29/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/</url>
-    <content><![CDATA[题目描述给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s，判断字符串是否有效。有效字符串需满足：
+    <title>数字反转普通版</title>
+    <url>/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/</url>
+    <content><![CDATA[题目描述给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。
 
-左括号必须用相同类型的右括号闭合。
-左括号必须以正确的顺序闭合。
-每个右括号都有一个对应的相同类型的左括号。
-
-
-输入格式输入共 1 行，包含一个字符串 s。
-输出格式输出共 1 行，如果字符串 s 是有效的括号字符串，输出 “true”；否则输出 “false”。
-数据范围1 ≤ s.length ≤ 10^4字符串 s 仅由括号 ‘()[]{}’ 组成
+输入格式输入共 1 行，一个整数 N。
+输出格式输出共 1 行，一个整数，表示反转后的新数。
+数据范围-1,000,000,000 ≤ N≤ 1,000,000,000。
 输入样例1：
-()
+123
 
 输出样例1：
-true
+321
 
 输入样例2：
-()[]&#123;&#125;
+-380
 
 输出样例2：
-true
-
-输入样例3：
-(]
-
-输出样例3：
-false
+-83
 
 注意事项
 
-有效的括号问题是栈的经典应用。
-遇到左括号时，将其压入栈中；遇到右括号时，检查栈顶元素是否是对应的左括号，如果是，则弹出栈顶元素；否则，返回false。
-遍历结束后，如果栈为空，则说明所有括号都正确匹配，返回true；否则，返回false。
-需要注意处理空字符串的情况（在本题中，输入字符串长度至少为1，所以不需要特别处理）。
+当输入的整数为负数时，需要在反转后保持负号。
+反转后的整数不能超过 int 类型的范围。
 
 代码实现
-#include &lt;iostream&gt;#include &lt;string&gt;#include &lt;stack&gt;#include &lt;unordered_map&gt;using namespace std;bool isValid(string s)&#123;    stack&lt;char&gt; bracketStack;    unordered_map&lt;char, char&gt; bracketMap = &#123;        &#123;&#x27;)&#x27;, &#x27;(&#x27;&#125;,        &#123;&#x27;&#125;&#x27;, &#x27;&#123;&#x27;&#125;,        &#123;&#x27;]&#x27;, &#x27;[&#x27;&#125;    &#125;;        for (char c : s)    &#123;        // 如果是左括号，压入栈中        if (c == &#x27;(&#x27; || c == &#x27;&#123;&#x27; || c == &#x27;[&#x27;)        &#123;            bracketStack.push(c);        &#125;        // 如果是右括号，检查栈顶元素是否匹配        else        &#123;            // 如果栈为空或者栈顶元素与当前右括号不匹配，返回false            if (bracketStack.empty() || bracketStack.top() != bracketMap[c])            &#123;                return false;            &#125;            // 括号匹配，弹出栈顶元素            bracketStack.pop();        &#125;    &#125;        // 如果栈为空，说明所有括号都正确匹配    return bracketStack.empty();&#125;int main()&#123;    string s;    cin &gt;&gt; s;        bool result = isValid(s);        if (result)    &#123;        cout &lt;&lt; &quot;true&quot; &lt;&lt; endl;    &#125;    else    &#123;        cout &lt;&lt; &quot;false&quot; &lt;&lt; endl;    &#125;        return 0;&#125;
+#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int res = 0;    while (n)    &#123;        res = res * 10 + n % 10;        n /= 10;    &#125;    cout &lt;&lt; res &lt;&lt; endl;    return 0;&#125;
 
 时间复杂度
 
-时间复杂度：O(n)，其中 n 是字符串的长度。我们只需要遍历字符串一次。
-空间复杂度：O(n)，最坏情况下，栈的大小可能等于字符串的长度（例如，所有字符都是左括号）。
+时间复杂度：O(logn)，其中 n 为输入的整数。
+空间复杂度：O(1)。
 
 代码解释
 
-有效的括号问题是栈的经典应用。栈的特点是后进先出（LIFO），这正好符合括号匹配的要求。
-我们使用一个哈希表来存储右括号与左括号的对应关系，这样可以快速检查括号是否匹配。
-遍历字符串时，对于每个字符：
-如果是左括号（’(‘，’{‘，’[‘），则将其压入栈中。
-如果是右括号（’)’，’}’，’]’），则检查栈顶元素是否是对应的左括号：
-如果栈为空或者栈顶元素与当前右括号不匹配，说明括号无效，返回false。
-如果栈顶元素与当前右括号匹配，则弹出栈顶元素，继续遍历。
-
-
-
-
-遍历结束后，如果栈为空，说明所有括号都正确匹配，返回true；否则，说明有左括号没有对应的右括号，返回false。
+我们使用一个循环来反转整数的每一位。
+在每一次循环中，我们将整数 n 对 10 取模，得到 n 的个位数，将个位数添加到结果 res 的末尾。
+然后，我们将整数 n 除以 10，去掉个位数。
+重复以上步骤，直到整数 n 变为 0。
+最后，输出结果 res。
 
 ]]></content>
       <categories>
@@ -891,6 +830,47 @@ false
 迭代方法通过保存前两项的结果来避免重复计算，时间复杂度为线性，适合计算较大的n值。
 在代码中，我们使用 long long 类型来存储中间结果和最终结果，以避免在处理较大的n值时发生溢出。
 对于n≤90的情况，long long 类型足够存储斐波那契数列的值。如果n更大，可能需要使用大数运算库。
+
+]]></content>
+      <categories>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最大公约数和最小公倍数</title>
+    <url>/2025/08/29/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E5%92%8C%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0/</url>
+    <content><![CDATA[题目描述最大公约数（GCD，Greatest Common Divisor）指两个或多个整数共有约数中最大的一个。最小公倍数（LCM，Least Common Multiple）指两个或多个整数公有的倍数中最小的一个。本问题要求计算两个正整数的最大公约数和最小公倍数。
+
+输入格式输入共 1 行，包含两个正整数 a 和 b（用空格分隔）。
+输出格式输出共 2 行，第一行是 a 和 b 的最大公约数，第二行是 a 和 b 的最小公倍数。
+数据范围1 ≤ a, b ≤ 1000000
+输入样例：
+48 36
+
+输出样例：
+12144
+
+注意事项
+
+计算最大公约数常用的算法有欧几里得算法（辗转相除法）和更相减损术。
+最小公倍数可以通过公式 LCM(a, b) &#x3D; a * b &#x2F; GCD(a, b) 计算，但需要注意乘法溢出的问题。
+
+代码实现
+#include &lt;iostream&gt;using namespace std;// 计算最大公约数（欧几里得算法/辗转相除法）long long gcd(long long a, long long b)&#123;    while (b != 0)    &#123;        long long temp = b;        b = a % b;        a = temp;    &#125;    return a;&#125;// 计算最小公倍数long long lcm(long long a, long long b)&#123;    // 先计算最大公约数，然后使用公式 LCM(a, b) = a * b / GCD(a, b)    // 为了避免乘法溢出，先进行除法运算    return a / gcd(a, b) * b;&#125;int main()&#123;    long long a, b;    cin &gt;&gt; a &gt;&gt; b;        long long greatest_common_divisor = gcd(a, b);    long long least_common_multiple = lcm(a, b);        cout &lt;&lt; greatest_common_divisor &lt;&lt; endl;    cout &lt;&lt; least_common_multiple &lt;&lt; endl;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(log min(a, b))，其中 a 和 b 是输入的两个正整数。
+空间复杂度：O(1)。
+
+代码解释
+
+计算最大公约数的欧几里得算法（辗转相除法）的核心思想是：如果 a 和 b 是两个正整数，且 a ≥ b，那么 gcd(a, b) &#x3D; gcd(b, a % b)。当 b 变为 0 时，a 就是最大公约数。
+计算最小公倍数的公式是 LCM(a, b) &#x3D; a * b &#x2F; GCD(a, b)。为了避免乘法溢出，我们先计算 a &#x2F; gcd(a, b)，然后再乘以 b。
+在代码中，我们使用 long long 类型来存储中间结果，以避免在处理较大的输入时发生溢出。
 
 ]]></content>
       <categories>
@@ -1007,25 +987,124 @@ false
       </tags>
   </entry>
   <entry>
-    <title>编程输出“Hello,World”</title>
-    <url>/2025/08/24/%E7%BC%96%E7%A8%8B%E8%BE%93%E5%87%BA%E2%80%9CHello-World%E2%80%9D/</url>
-    <content><![CDATA[题目描述编写一个C++程序，输出“Hello,World!”。
+    <title>有效的括号</title>
+    <url>/2025/08/29/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/</url>
+    <content><![CDATA[题目描述给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s，判断字符串是否有效。有效字符串需满足：
 
-输入无
-输出Hello,World!
-代码
-#include &lt;iostream&gt;using namespace std;int main()&#123;    cout &lt;&lt; &quot;Hello,World!&quot; &lt;&lt; endl;    return 0;&#125;
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+每个右括号都有一个对应的相同类型的左括号。
+
+
+输入格式输入共 1 行，包含一个字符串 s。
+输出格式输出共 1 行，如果字符串 s 是有效的括号字符串，输出 “true”；否则输出 “false”。
+数据范围1 ≤ s.length ≤ 10^4字符串 s 仅由括号 ‘()[]{}’ 组成
+输入样例1：
+()
+
+输出样例1：
+true
+
+输入样例2：
+()[]&#123;&#125;
+
+输出样例2：
+true
+
+输入样例3：
+(]
+
+输出样例3：
+false
+
+注意事项
+
+有效的括号问题是栈的经典应用。
+遇到左括号时，将其压入栈中；遇到右括号时，检查栈顶元素是否是对应的左括号，如果是，则弹出栈顶元素；否则，返回false。
+遍历结束后，如果栈为空，则说明所有括号都正确匹配，返回true；否则，返回false。
+需要注意处理空字符串的情况（在本题中，输入字符串长度至少为1，所以不需要特别处理）。
+
+代码实现
+#include &lt;iostream&gt;#include &lt;string&gt;#include &lt;stack&gt;#include &lt;unordered_map&gt;using namespace std;bool isValid(string s)&#123;    stack&lt;char&gt; bracketStack;    unordered_map&lt;char, char&gt; bracketMap = &#123;        &#123;&#x27;)&#x27;, &#x27;(&#x27;&#125;,        &#123;&#x27;&#125;&#x27;, &#x27;&#123;&#x27;&#125;,        &#123;&#x27;]&#x27;, &#x27;[&#x27;&#125;    &#125;;        for (char c : s)    &#123;        // 如果是左括号，压入栈中        if (c == &#x27;(&#x27; || c == &#x27;&#123;&#x27; || c == &#x27;[&#x27;)        &#123;            bracketStack.push(c);        &#125;        // 如果是右括号，检查栈顶元素是否匹配        else        &#123;            // 如果栈为空或者栈顶元素与当前右括号不匹配，返回false            if (bracketStack.empty() || bracketStack.top() != bracketMap[c])            &#123;                return false;            &#125;            // 括号匹配，弹出栈顶元素            bracketStack.pop();        &#125;    &#125;        // 如果栈为空，说明所有括号都正确匹配    return bracketStack.empty();&#125;int main()&#123;    string s;    cin &gt;&gt; s;        bool result = isValid(s);        if (result)    &#123;        cout &lt;&lt; &quot;true&quot; &lt;&lt; endl;    &#125;    else    &#123;        cout &lt;&lt; &quot;false&quot; &lt;&lt; endl;    &#125;        return 0;&#125;
+
+时间复杂度
+
+时间复杂度：O(n)，其中 n 是字符串的长度。我们只需要遍历字符串一次。
+空间复杂度：O(n)，最坏情况下，栈的大小可能等于字符串的长度（例如，所有字符都是左括号）。
+
 代码解释
 
-包含头文件iostream，用于输入输出流。
-使用命名空间std，避免使用std::前缀。
-定义主函数main，程序从这里开始执行。
-使用cout输出“Hello,World!”，endl表示换行。
-返回0表示程序正常结束。
+有效的括号问题是栈的经典应用。栈的特点是后进先出（LIFO），这正好符合括号匹配的要求。
+我们使用一个哈希表来存储右括号与左括号的对应关系，这样可以快速检查括号是否匹配。
+遍历字符串时，对于每个字符：
+如果是左括号（’(‘，’{‘，’[‘），则将其压入栈中。
+如果是右括号（’)’，’}’，’]’），则检查栈顶元素是否是对应的左括号：
+如果栈为空或者栈顶元素与当前右括号不匹配，说明括号无效，返回false。
+如果栈顶元素与当前右括号匹配，则弹出栈顶元素，继续遍历。
+
+
+
+
+遍历结束后，如果栈为空，说明所有括号都正确匹配，返回true；否则，说明有左括号没有对应的右括号，返回false。
 
 ]]></content>
       <categories>
-        <category>程序设计</category>
+        <category>算法基础</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>生成树计数~</title>
+    <url>/2025/10/05/%E7%94%9F%E6%88%90%E6%A0%91%E8%AE%A1%E6%95%B0/</url>
+    <content><![CDATA[洛谷P4002 [清华集训 2017] 生成树计数题目描述在一个 $s$ 个点的图中，存在 $s-n$ 条边，使图中形成了 $n$ 个连通块，第 $i$ 个连通块中有 $a_i$ 个点。
+现在我们需要再连接 $n-1$ 条边，使该图变成一棵树。对一种连边方案，设原图中第 $i$ 个连通块连出了 $d_i$ 条边，那么这棵树 $T$ 的价值为：
+$$ \mathrm{val}(T) &#x3D; \left(\prod_{i&#x3D;1}^{n} {d_i}^m\right)\left(\sum_{i&#x3D;1}^{n} {d_i}^m\right) $$
+你的任务是求出所有可能的生成树的价值之和，对 $998244353$ 取模。
+输入格式输入的第一行包含两个整数 $n,m$，意义见题目描述。
+接下来一行有 $n$ 个整数，第 $i$ 个整数表示 $a_i$ $(1\le a_i&lt; 998244353)$。
+
+你可以由 $a_i$ 计算出图的总点数 $s$，所以在输入中不再给出 $s$ 的值。
+
+输出格式输出包含一行一个整数，表示答案。
+输入输出样例 #1输入 #13 12 3 4
+
+输出 #11728
+
+输入输出样例 #2输入 #2233 10604230822 258609018 347836125 103063600 545593375 983656639 636383432 149579311 37952830 782185282 792399760 556879020 19276539 821164472 992758005 635410231 174811932 967712405 76287574 877354238 403371989 131233662 90928781 909518950 816498283 460305280 688669184 272529638 706529895 931734844 376928193 161521421 41104566 573769373 264585020 586697940 408186715 749973507 585282307 446139544 533914437 228442770 4774211 553190975 51362889 997532216 39361909 75179876 816005324 115649482 801539169 70138016 95888199 892467950 979656965 761391537 354528877 519086852 35676822 910063828 301582400 261610070 73340896 342686965 835379442 186930971 778389960 245321804 936904477 365427914 691461347 321579617 593870684 545240614 874770591 494238628 393533533 914132499 418423560 211294504 878787036 221718376 281432519 823680290 115941973 111850187 435832530 319475906 630937038 471509352 80300437 932519437 733119421 153641332 125967105 419259567 340572302 904357065 664581370 128237482 120545682 206803421 449817099 563421421 752044034 175348393 59415697 147333214 91236540 326844312 207632773 819028631 548562687 338070347 493469625 513509716 449920533 929302154 681990677 929862626 251572209 762291113 713142767 833696686 915932444 839109871 254711900 107265449 594227639 768298325 235502930 563778377 975101745 685320028 128955445 577906482 860668421 37376197 574244751 800910016 364220508 630882579 470699350 761788251 968952925 813174030 126058670 269634161 593236888 808049346 201252435 844809096 572096106 914395201 529266485 338789253 604265775 783978384 295059757 49254118 403037413 530562686 613032494 228899861 66643418 590992994 806806343 776316894 628369191 231811797 427987613 841594754 862694376 898686962 605138652 682408004 562621696 731197321 952042165 157614231 390007370 4055303 851428382 962103475 918450503 382450515 151653431 373476981 17189602 446713187 271736154 420227014 826280929 884768647 649126875 892924346 326522345 306693921 520001943 954891535 387510773 947989555 647246992 100965852 697437220 103146348 783373856 261814563 834343668 737171668 268433849 75111742 741226970 121617879 38970864 510438176 353073449 39629351 732920212 370263050 335347593 6412014 639495120 163384169 740185716 139382698 905313570 68463708 446076618 427071160 872360298 833587390 225821418
+
+输出 #2521800668
+
+说明&#x2F;提示令 $i$ 表示大小为 $i$ 的原连通块，我们在连通块之间的连边有以下三种可能:
+
+$2-3-4$
+$3-2-4$
+$2-4-3$
+
+价值和为:$$(2×3^2 ×4×2+3×2^2 ×4×2+2×4^2 ×3×2)×(1+2+1)&#x3D;1728$$
+
+本题共有 $20$ 个测试点，每个测试点 $5$ 分。 
+
+$20%$ 的数据中，$n\le500$。
+
+另外 $20%$ 的数据中，$n \le 3000$。
+
+另外 $10%$ 的数据中，$n \le 10010, m &#x3D; 1$。 
+
+另外 $10%$的数据中，$n \le 10015,m &#x3D; 2$。 
+
+另外 $20%$ 的数据中，所有 $a_i$ 相等。
+
+$100%$ 的数据中，$n \le 3\times 10^4,m \le 30$。
+
+
+其中，每一个部分分的测试点均有一定梯度。#参考代码
+#include&lt;bits/stdc++.h&gt;#define re registerconst int mod=998244353;const int G[2]=&#123;3,(mod+1)/3&#125;;inline int read() &#123;	char c=getchar();int x=0;while(c&lt;&#x27;0&#x27;||c&gt;&#x27;9&#x27;)c=getchar();	while(c&gt;=&#x27;0&#x27;&amp;&amp;c&lt;=&#x27;9&#x27;)x=(x&lt;&lt;3)+(x&lt;&lt;1)+c-48,c=getchar();return x;&#125;const int Maxlen=65539;const int maxn=3e4+5;std::vector&lt;int&gt; p[maxn*3],q[maxn*3];int n,m,a[maxn],S[105][105],sum,len,inv[maxn],__og[2][50];int rev[Maxlen],A[Maxlen],C[Maxlen],B[Maxlen],D[Maxlen];inline int dqm(int x) &#123;return x&lt;0?x+mod:x;&#125;inline int qm(int x) &#123;return x&gt;=mod?x-mod:x;&#125;inline int ksm(int a,int b) &#123;	int S=1;for(;b;b&gt;&gt;=1,a=1ll*a*a%mod)if(b&amp;1)S=1ll*S*a%mod;return S;&#125;inline void NTT(int *f,int o) &#123;	for(re int i=0;i&lt;len;i++)if(i&lt;rev[i])std::swap(f[i],f[rev[i]]);	for(re int w=0,i=2;i&lt;=len;i&lt;&lt;=1,++w) &#123;		int ln=i&gt;&gt;1,og1;		if(!__og[o][w])og1=__og[o][w]=ksm(G[o],(mod-1)/i);else og1=__og[o][w];		for(re int t,og=1,l=0;l&lt;len;l+=i,og=1)			for(re int x=l;x&lt;l+ln;++x) &#123;				t=1ll*f[x+ln]*og%mod,og=1ll*og1*og%mod;				f[x+ln]=dqm(f[x]-t);f[x]=qm(f[x]+t);			&#125;	&#125;	if(!o)return;int Inv=ksm(len,mod-2);for(re int i=0;i&lt;len;i++)f[i]=1ll*f[i]*Inv%mod;&#125;void cdq(int l,int r,int k) &#123;	if(l==r) &#123;		int nw=a[l];		for(re int i=0;i&lt;=m+m;i++)p[k].push_back(1ll*nw*S[m+m+1][i+1]%mod),nw=1ll*nw*a[l]%mod;		nw=a[l];for(re int i=0;i&lt;=m;i++)q[k].push_back(1ll*nw*S[m+1][i+1]%mod),nw=1ll*nw*a[l]%mod;		return;	&#125;	int mid=l+r&gt;&gt;1;	cdq(l,mid,k&lt;&lt;1),cdq(mid+1,r,k&lt;&lt;1|1);	int lenl=p[k&lt;&lt;1].size(),lenr=p[k&lt;&lt;1|1].size();	len=1;while(len&lt;=lenl+lenr+1) len&lt;&lt;=1;	for(re int i=0;i&lt;len;i++)rev[i]=rev[i&gt;&gt;1]&gt;&gt;1|((i&amp;1)?len&gt;&gt;1:0);	for(re int i=0;i&lt;p[k&lt;&lt;1].size();++i) A[i]=p[k&lt;&lt;1][i];	for(re int i=0;i&lt;p[k&lt;&lt;1|1].size();++i) B[i]=p[k&lt;&lt;1|1][i];	for(re int i=0;i&lt;q[k&lt;&lt;1].size();++i) C[i]=q[k&lt;&lt;1][i];	for(re int i=0;i&lt;q[k&lt;&lt;1|1].size();++i) D[i]=q[k&lt;&lt;1|1][i];	NTT(A,0),NTT(B,0),NTT(C,0),NTT(D,0);	for(re int i=0;i&lt;len;i++) A[i]=qm(1ll*A[i]*D[i]%mod+1ll*B[i]*C[i]%mod),C[i]=1ll*C[i]*D[i]%mod;	NTT(A,1),NTT(C,1);	for(re int i=0;i&lt;len;i++) &#123;		if(i&gt;n-2) break;		p[k].push_back(A[i]);		q[k].push_back(C[i]);	&#125;	for(re int i=0;i&lt;len;i++) A[i]=B[i]=C[i]=D[i]=0;	int lp=p[k].size(),lq=q[k].size();lp--;lq--;	for(re int i=lp;i&gt;=0;--i) 		if(!p[k][i]) p[k].pop_back();else break;	for(re int i=lq;i&gt;=0;--i)		if(!q[k][i]) q[k].pop_back();else break;&#125;signed main() &#123;	n=read(),m=read();S[0][0]=1;inv[0]=1;	for(re int i=1;i&lt;=m+m+1;i++)		for(re int j=1;j&lt;=i;++j) S[i][j]=qm(S[i-1][j-1]+1ll*S[i-1][j]*j%mod);	for(re int i=1;i&lt;=n;i++) a[i]=read(),sum=qm(sum+a[i]);	if(n==1) return puts(&quot;1&quot;),0;	inv[1]=1;for(re int i=2;i&lt;=n;i++) inv[i]=1ll*(mod-mod/i)*inv[mod%i]%mod;	cdq(1,n,1);for(re int i=0;i&lt;p[1].size();++i) A[i]=p[1][i];int ans=0;	for(re int i=1;i&lt;=n-2;i++) inv[i]=1ll*inv[i]*inv[i-1]%mod;	for(re int nw=1,i=0;i&lt;=n-2;i++,nw=1ll*nw*sum%mod)B[i]=1ll*inv[i]*nw%mod;	for(re int i=0;i&lt;=n-2;i++)ans=qm(ans+1ll*A[i]*B[n-2-i]%mod);	for(re int i=1;i&lt;=n-2;i++)ans=1ll*ans*i%mod;	std::cout&lt;&lt;ans&lt;&lt;std::endl;return 0;&#125;//g++ lg4002.cpp -o lg4002
+
+]]></content>
+      <categories>
+        <category>算法提升</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -1048,6 +1127,31 @@ H 和 W 为大写字母。
 输入输出样例 #1输入 #1无
 
 输出 #1Hello,World!]]></content>
+      <categories>
+        <category>程序设计</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编程输出“Hello,World”</title>
+    <url>/2025/08/24/%E7%BC%96%E7%A8%8B%E8%BE%93%E5%87%BA%E2%80%9CHello-World%E2%80%9D/</url>
+    <content><![CDATA[题目描述编写一个C++程序，输出“Hello,World!”。
+
+输入无
+输出Hello,World!
+代码
+#include &lt;iostream&gt;using namespace std;int main()&#123;    cout &lt;&lt; &quot;Hello,World!&quot; &lt;&lt; endl;    return 0;&#125;
+代码解释
+
+包含头文件iostream，用于输入输出流。
+使用命名空间std，避免使用std::前缀。
+定义主函数main，程序从这里开始执行。
+使用cout输出“Hello,World!”，endl表示换行。
+返回0表示程序正常结束。
+
+]]></content>
       <categories>
         <category>程序设计</category>
       </categories>
@@ -1093,55 +1197,6 @@ H 和 W 为大写字母。
 
 
 最后，将排序结果复制回原数组。
-
-]]></content>
-      <categories>
-        <category>算法基础</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数字反转普通版</title>
-    <url>/2025/08/28/%E6%95%B0%E5%AD%97%E5%8F%8D%E8%BD%AC%E6%99%AE%E9%80%9A%E7%89%88/</url>
-    <content><![CDATA[题目描述给定一个整数，请将该数各个位上数字反转得到一个新数。新数也应满足整数的常见形式，即除非给定的原数为零，否则反转后得到的新数的最高位数字不应为零（参见样例2）。
-
-输入格式输入共 1 行，一个整数 N。
-输出格式输出共 1 行，一个整数，表示反转后的新数。
-数据范围-1,000,000,000 ≤ N≤ 1,000,000,000。
-输入样例1：
-123
-
-输出样例1：
-321
-
-输入样例2：
--380
-
-输出样例2：
--83
-
-注意事项
-
-当输入的整数为负数时，需要在反转后保持负号。
-反转后的整数不能超过 int 类型的范围。
-
-代码实现
-#include &lt;iostream&gt;using namespace std;int main()&#123;    int n;    cin &gt;&gt; n;    int res = 0;    while (n)    &#123;        res = res * 10 + n % 10;        n /= 10;    &#125;    cout &lt;&lt; res &lt;&lt; endl;    return 0;&#125;
-
-时间复杂度
-
-时间复杂度：O(logn)，其中 n 为输入的整数。
-空间复杂度：O(1)。
-
-代码解释
-
-我们使用一个循环来反转整数的每一位。
-在每一次循环中，我们将整数 n 对 10 取模，得到 n 的个位数，将个位数添加到结果 res 的末尾。
-然后，我们将整数 n 除以 10，去掉个位数。
-重复以上步骤，直到整数 n 变为 0。
-最后，输出结果 res。
 
 ]]></content>
       <categories>
